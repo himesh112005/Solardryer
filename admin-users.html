@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Admin Panel</title>
+    
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="admin.css">
+    
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <div class="nav-left">
+                <img src="image.png" alt="Dassault Systemes Foundation Logo" class="header-logo left-logo">
+                <a href="index.html" class="logo">SolarDry Solutions</a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin-dashboard.html">Admin</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="nav-right">
+                <img src="ssvps-college-of-engineering-dhule-logo.jpg" alt="Ssvps Logo" class="header-logo">
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h3>Admin Panel</h3>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="admin-dashboard.html">📊 Dashboard</a></li>
+                    <li><a href="admin-products.html">📦 Products</a></li>
+                    <li><a href="admin-blog.html">📝 Blog Articles</a></li>
+                    <li><a href="admin-messages.html">💬 Messages</a></li>
+                    <li><a href="admin-users.html" class="active">👥 Users</a></li>
+                    <li><a href="admin-settings.html">⚙️ Settings</a></li>
+                    <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Manage Users</h1>
+                <button onclick="openAddUserModal()" class="btn">+ Add New User</button>
+            </div>
+
+            <div class="admin-section">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Joined Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                        <tr>
+                            <td colspan="6" class="text-center">Loading users...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New User</h2>
+            <form id="addUserForm" onsubmit="handleAddUser(event)">
+                <div class="form-group">
+                    <label for="newUsername">Username</label>
+                    <input type="text" id="newUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="newEmail">Email</label>
+                    <input type="email" id="newEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Password</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newRole">Role</label>
+                    <select id="newRole" required>
+                        <option value="user">User</option>
+                        <option value="moderator">Moderator</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Add User</button>
+                    <button type="button" onclick="closeUserModal()" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2025 SolarDry Solutions Admin Panel. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="admin-login.js"></script>
+    <script src="admin.js"></script>
+    <script src="admin-users.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "email": "admin@solardry.com",
+      "password": "admin123",
+      "role": "admin",
+      "status": "active",
+      "joinedDate": "2025-01-01",
+      "lastLogin": "2025-01-15"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Small Farm Unit",
+      "modelId": "S-100",
+      "price": 25000,
+      "description": "Perfect for individual farmers, this compact unit offers high efficiency for small batches of produce.",
+      "image": "https://placehold.co/300x200/2a9d8f/ffffff?text=Small+Farm+Dryer",
+      "status": "active",
+      "createdDate": "2025-01-01",
+      "updatedDate": "2025-01-15"
+    },
+    {
+      "id": 2,
+      "name": "Commercial Processor",
+      "modelId": "C-500",
+      "price": 150000,
+      "description": "A medium-scale solution designed for co-ops and small businesses requiring larger capacity and faster drying times.",
+      "image": "https://placehold.co/300x200/e9c46a/264653?text=Commercial+Dryer",
+      "status": "active",
+      "createdDate": "2025-01-02",
+      "updatedDate": "2025-01-15"
+    },
+    {
+      "id": 3,
+      "name": "Industrial High-Flow System",
+      "modelId": "I-2000",
+      "price": 500000,
+      "description": "The top-tier solution for large-volume industrial applications, featuring automated controls and continuous flow.",
+      "image": "https://placehold.co/300x200/f4a261/ffffff?text=Industrial+System",
+      "status": "active",
+      "createdDate": "2025-01-03",
+      "updatedDate": "2025-01-15"
+    }
+  ],
+  "articles": [
+    {
+      "id": 1,
+      "title": "Stop Wasting Fuel: The Hidden Cost Savings of Switching to Solar Drying",
+      "category": "economics",
+      "excerpt": "Many businesses underestimate the long-term expense of fuel-based drying. We break down the true economic benefits and ROI when you transition to our sustainable solar solutions.",
+      "content": "Full article content here...",
+      "author": "Admin",
+      "image": "https://images.unsplash.com/photo-1543277322-a9b3438f615e",
+      "status": "published",
+      "createdDate": "2025-01-10",
+      "updatedDate": "2025-01-15"
+    },
+    {
+      "id": 2,
+      "title": "Direct vs. Indirect: Which Solar Dryer Model is Best for Your Specific Crop?",
+      "category": "product",
+      "excerpt": "Choosing the right dryer is critical for quality. Learn the differences between Direct, Indirect, and Mixed-Mode drying.",
+      "content": "Full article content here...",
+      "author": "Admin",
+      "image": "https://images.unsplash.com/photo-1582218084684-061266e07663",
+      "status": "published",
+      "createdDate": "2025-01-08",
+      "updatedDate": "2025-01-15"
+    },
+    {
+      "id": 3,
+      "title": "How Solar Technology Guarantees Cleaner, More Hygienic Food Preservation",
+      "category": "quality",
+      "excerpt": "Unlike open-air sun drying, our sealed solar chambers protect produce from dust, pests, and contamination.",
+      "content": "Full article content here...",
+      "author": "Admin",
+      "image": "https://images.unsplash.com/photo-1549488349-e366838a6a6c",
+      "status": "published",
+      "createdDate": "2025-01-05",
+      "updatedDate": "2025-01-15"
+    },
+    {
+      "id": 4,
+      "title": "Building Food Security: Our Role in Reducing Post-Harvest Loss",
+      "category": "impact",
+      "excerpt": "In rural communities, spoilage is a massive challenge. Discover how our cost-effective solar dryers empower farmers.",
+      "content": "Full article content here...",
+      "author": "Admin",
+      "image": "https://images.unsplash.com/photo-1543468537-88f613c9e782",
+      "status": "published",
+      "createdDate": "2025-01-01",
+      "updatedDate": "2025-01-15"
+    }
+  ],
+  "contactMessages": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "phone": "+91 9876543210",
+      "subject": "Inquiry about Small Farm Unit",
+      "message": "I am interested in learning more about your Small Farm Unit.",
+      "status": "unread",
+      "createdDate": "2025-01-15",
+      "reply": null
+    }
+  ],
+  "settings": {
+    "siteName": "SolarDry Solutions",
+    "siteEmail": "solardryer@gmail.com",
+    "sitePhone": "+91 94230 80717",
+    "siteAddress": "SSVPS's BAPUSAHEB SHIVAJIRAO DEORE COLLEGE OF ENGINEERING, Deopur, Dhule, MS, India",
+    "logo": "image.png",
+    "secondaryLogo": "ssvps-college-of-engineering-dhule-logo.jpg",
+    "theme": "light",
+    "maintenanceMode": false,
+    "updatedDate": "2025-01-15"
+  }
+}

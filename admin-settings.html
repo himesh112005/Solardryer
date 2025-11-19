@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Admin Panel</title>
+    
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="admin.css">
+    
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <div class="nav-left">
+                <img src="image.png" alt="Dassault Systemes Foundation Logo" class="header-logo left-logo">
+                <a href="index.html" class="logo">SolarDry Solutions</a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin-dashboard.html">Admin</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="nav-right">
+                <img src="ssvps-college-of-engineering-dhule-logo.jpg" alt="Ssvps Logo" class="header-logo">
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h3>Admin Panel</h3>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="admin-dashboard.html">📊 Dashboard</a></li>
+                    <li><a href="admin-products.html">📦 Products</a></li>
+                    <li><a href="admin-blog.html">📝 Blog Articles</a></li>
+                    <li><a href="admin-messages.html">💬 Messages</a></li>
+                    <li><a href="admin-users.html">👥 Users</a></li>
+                    <li><a href="admin-settings.html" class="active">⚙️ Settings</a></li>
+                    <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Settings</h1>
+            </div>
+
+            <div class="settings-container">
+                <!-- Site Settings -->
+                <div class="settings-section">
+                    <h2>Site Settings</h2>
+                    <form id="siteSettingsForm" onsubmit="saveSiteSettings(event)">
+                        <div class="form-group">
+                            <label for="siteName">Site Name</label>
+                            <input type="text" id="siteName" value="SolarDry Solutions">
+                        </div>
+                        <div class="form-group">
+                            <label for="siteEmail">Contact Email</label>
+                            <input type="email" id="siteEmail" value="solardryer@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="sitePhone">Phone Number</label>
+                            <input type="tel" id="sitePhone" value="+91 94230 80717">
+                        </div>
+                        <button type="submit" class="btn">Save Changes</button>
+                    </form>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="settings-section">
+                    <h2>Security Settings</h2>
+                    <form id="securityForm" onsubmit="changePassword(event)">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn">Change Password</button>
+                    </form>
+                </div>
+
+                <!-- Admin Profile -->
+                <div class="settings-section">
+                    <h2>Admin Profile</h2>
+                    <form id="profileForm" onsubmit="updateProfile(event)">
+                        <div class="form-group">
+                            <label for="adminName">Admin Name</label>
+                            <input type="text" id="adminName" value="Administrator" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminEmail">Admin Email</label>
+                            <input type="email" id="adminEmail" value="admin@solardry.com" required>
+                        </div>
+                        <button type="submit" class="btn">Update Profile</button>
+                    </form>
+                </div>
+
+                <!-- Backup & Maintenance -->
+                <div class="settings-section">
+                    <h2>Backup & Maintenance</h2>
+                    <div class="button-group">
+                        <button onclick="backupData()" class="btn">📥 Backup Data</button>
+                        <button onclick="clearCache()" class="btn">🗑️ Clear Cache</button>
+                        <button onclick="restoreDefaults()" class="btn delete">⚠️ Restore Defaults</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2025 SolarDry Solutions Admin Panel. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="admin-login.js"></script>
+    <script src="admin.js"></script>
+    <script src="admin-settings.js"></script>
+</body>
+</html>

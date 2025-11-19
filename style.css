@@ -1,0 +1,516 @@
+/* === Global Styles === */
+:root {
+    --primary-color: #2a9d8f; /* Teal */
+    --secondary-color: #e9c46a; /* Yellow */
+    --dark-color: #264653; /* Dark Blue/Green */
+    --light-color: #f4f4f4; /* Light Gray */
+    --text-color: #333;
+    --white: #ffffff;
+    --border-radius: 8px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--white);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+h1 { font-size: 2.8rem; }
+h2 { font-size: 2.2rem; }
+h3 { font-size: 1.5rem; }
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.btn:hover {
+    background: var(--dark-color);
+}
+
+.btn-secondary {
+    background: var(--secondary-color);
+    color: var(--dark-color);
+}
+
+.btn-secondary:hover {
+    background: #f4a261; /* Orange */
+}
+
+/* === Header / Navbar === */
+.navbar {
+    background: var(--white);
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Added gap for logo/text */
+}
+
+/* Default logo size */
+.header-logo {
+    width: 60px; 
+    height: auto;
+    object-fit: contain;
+}
+
+/* 🚀 MODIFICATION: Dassault Logo (Left Logo) Increased Size to 150px for maximum prominence */
+.left-logo {
+    width: 150px; /* **Significantly Increased size for main investor logo** */
+    height: auto;
+}
+/* ============================================================= */
+
+/* Right logo size */
+.nav-right .header-logo {
+    width: 60px;
+}
+
+.logo {
+    text-decoration: none;
+    color: inherit;
+}
+
+.navbar .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    white-space: nowrap;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.navbar .nav-links li {
+    margin-left: 2rem;
+}
+
+.navbar .nav-links a {
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-links a:hover,
+.navbar .nav-links a.active {
+    color: var(--primary-color);
+}
+
+/* Menu Toggle Button (for mobile) */
+.menu-toggle {
+    display: none; /* Hidden by default on desktop */
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--dark-color);
+    padding: 5px;
+}
+
+/* === Hero Section === */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('WhatsApp Image 2025-11-03 at 15.42.53_a64e1303.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--white);
+    padding: 8rem 0;
+    text-align: center;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero h1 {
+    color: var(--white);
+    font-size: 3.5rem;
+    max-width: 800px;
+    margin-bottom: 1.5rem;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+/* === Core Benefits Section === */
+.benefits {
+    padding: 5rem 0;
+    background: var(--light-color);
+    text-align: center;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2.5rem;
+    margin-top: 3rem;
+}
+
+.benefit-card {
+    background: var(--white);
+    padding: 2.5rem 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-10px);
+}
+
+.benefit-card .icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.benefit-card h3 {
+    margin-bottom: 0.5rem;
+}
+
+/* === How It Works Section === */
+.how-it-works {
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.how-it-works-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    text-align: left;
+}
+
+.step {
+    background: var(--light-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border-left: 5px solid var(--primary-color);
+}
+
+.step .step-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.step h3 {
+    margin-bottom: 0.5rem;
+}
+
+/* === Featured Products Section */
+.featured-products {
+    padding: 5rem 0;
+    background: var(--light-color);
+    text-align: center;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.product-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    text-align: left;
+    transition: box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.product-card-content {
+    padding: 1.5rem;
+}
+
+.product-card-content .product-type {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #777;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.product-card-content h3 {
+    margin-bottom: 1rem;
+    min-height: 3rem; /* Ensure consistent card height for short titles */
+}
+
+.product-card-content p {
+    min-height: 4rem; /* Ensure consistent card height for short descriptions */
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.product-card-content .price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+.product-card-content .btn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+}
+
+/* === Social Impact (CTA) Section */
+.social-impact {
+    background: var(--dark-color);
+    color: var(--white);
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.social-impact h2 {
+    color: var(--white);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.social-impact p {
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* === Footer Styles */
+.footer {
+    background: #1a1a1a;
+    color: #aaa;
+    padding: 3rem 0;
+    font-size: 0.95rem;
+}
+
+.footer .container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Four columns */
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.footer-col h5 {
+    color: var(--white);
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-col ul li a,
+.footer-col p {
+    color: #aaa;
+    transition: color 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+    color: var(--white);
+}
+
+.footer-bottom {
+    grid-column: 1 / -1; /* Spans all columns */
+    margin-top: 2rem;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #333;
+}
+
+/* Added for placeholder when no products are available */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    margin-top: 30px;
+    color: #666;
+    font-size: 1.2rem;
+    background: #fff;
+    grid-column: 1 / -1; /* Span entire grid width */
+}
+
+/* === Responsive Design (Fixing Navbar and Footer) */
+@media (max-width: 900px) {
+    /* Adjust main navigation for tablets/smaller screens */
+    .navbar .nav-links {
+        display: none; /* Hide desktop menu */
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        background: var(--white);
+        position: absolute;
+        top: 100%; /* Position right below the header */
+        left: 0;
+        padding: 1rem 0;
+        border-top: 1px solid #eee;
+    }
+
+    .navbar .nav-links.open {
+        display: flex; /* Show mobile menu when active/open */
+    }
+
+    .navbar .nav-links li {
+        margin: 0.5rem 0;
+    }
+
+    .menu-toggle {
+        display: block; /* Show menu toggle button */
+    }
+
+    .navbar .container {
+        flex-wrap: wrap;
+    }
+    
+    .nav-left, .nav-right {
+        /* Keep logos on the sides */
+    }
+    
+    .nav-left {
+        flex-grow: 1;
+        justify-content: flex-start;
+    }
+    
+    .nav-right {
+        /* Pushing right logo closer to the right edge */
+        flex-grow: 0;
+        margin-left: auto;
+    }
+}
+
+
+@media (max-width: 768px) {
+    /* Footer responsiveness */
+    .footer .container {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on tablets */
+    }
+    .footer-col[style*="grid-column: span 2"] {
+        grid-column: span 2 !important; /* Contact us spans two columns */
+        text-align: center;
+    }
+    .footer-col h5 {
+        text-align: left;
+    }
+    .footer-col:nth-child(3) h5 { /* Contact Us header center on 2-col layout */
+        text-align: center;
+    }
+}
+
+@media (max-width: 500px) {
+    /* General Mobile adjustments */
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.8rem; }
+    .hero {
+        padding: 5rem 0;
+        min-height: 60vh;
+    }
+
+    /* Navbar */
+    .navbar .logo {
+        font-size: 1.5rem;
+    }
+    
+    /* 🚀 MODIFICATION: Left Logo still bigger on mobile */
+    .left-logo {
+        width: 100px; /* Increased mobile size for prominence */
+    }
+    /* ======================================================= */
+    
+    .nav-right .header-logo {
+        width: 40px; /* Smaller logos on mobile */
+    }
+
+    /* Footer responsiveness */
+    .footer .container {
+        grid-template-columns: 1fr; /* Single column on phones */
+        text-align: center;
+    }
+    .footer-col h5 {
+        text-align: center;
+        border-bottom: none;
+    }
+    .footer-col[style*="grid-column: span 2"] {
+        grid-column: span 1 !important; /* Back to 1 column */
+    }
+}

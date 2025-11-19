@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Blog Article - Admin Panel</title>
+    
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="admin.css">
+    
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <div class="nav-left">
+                <img src="image.png" alt="Dassault Systemes Foundation Logo" class="header-logo left-logo">
+                <a href="index.html" class="logo">SolarDry Solutions</a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin-dashboard.html">Admin</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="nav-right">
+                <img src="ssvps-college-of-engineering-dhule-logo.jpg" alt="Ssvps Logo" class="header-logo">
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h3>Admin Panel</h3>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="admin-dashboard.html">📊 Dashboard</a></li>
+                    <li><a href="admin-products.html">📦 Products</a></li>
+                    <li><a href="admin-blog.html" class="active">📝 Blog Articles</a></li>
+                    <li><a href="admin-users.html">👥 Users</a></li>
+                    <li><a href="admin-settings.html">⚙️ Settings</a></li>
+                    <li><a href="index.html" onclick="logout()">🚪 Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Add New Blog Article</h1>
+            </div>
+
+            <div class="admin-section">
+                <form class="admin-form" id="addBlogForm" onsubmit="handleAddBlog(event)">
+                    <div class="form-group">
+                        <label for="blog-title">Article Title *</label>
+                        <input type="text" id="blog-title" name="blog-title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="blog-category">Category *</label>
+                        <select id="blog-category" name="blog-category" required>
+                            <option value="">Select Category</option>
+                            <option value="economics">Economics & ROI</option>
+                            <option value="product">Product Education</option>
+                            <option value="quality">Quality & Policy</option>
+                            <option value="impact">Social Impact</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="blog-excerpt">Excerpt *</label>
+                        <textarea id="blog-excerpt" name="blog-excerpt" rows="3" placeholder="Brief summary of the article" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="blog-content">Content *</label>
+                        <textarea id="blog-content" name="blog-content" rows="10" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="blog-image">Featured Image</label>
+                        <input type="file" id="blog-image" name="blog-image" accept="image/*">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="blog-author">Author</label>
+                            <input type="text" id="blog-author" name="blog-author" value="Admin">
+                        </div>
+                        <div class="form-group">
+                            <label for="blog-status">Status</label>
+                            <select id="blog-status" name="blog-status">
+                                <option value="published">Published</option>
+                                <option value="draft">Draft</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Publish Article</button>
+                        <a href="admin-blog.html" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2025 SolarDry Solutions Admin Panel. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="admin.js"></script>
+</body>
+</html>
