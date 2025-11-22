@@ -1,4 +1,3 @@
-
 ---
 
 ```markdown
@@ -235,6 +234,226 @@ Unauthorized distribution is prohibited.
 ```
 
 ---
+
+# SolarDry Solutions - Website
+
+A professional website for SolarDry Solutions, showcasing innovative solar drying technology solutions.
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18.x+
+- npm 9.x+
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+
+# Visit http://localhost:3000
+```
+
+## 📋 Deployment
+
+### Quick Deploy (Windows)
+```bash
+# Double-click QUICK_DEPLOY.bat
+# or run:
+QUICK_DEPLOY.bat
+```
+
+### Full Deployment Guide
+See: [DEPLOY_GUIDE.md](DEPLOY_GUIDE.md)
+
+### Windows Setup Guide
+See: [WINDOWS_SETUP.md](WINDOWS_SETUP.md)
+
+### Standard Deployment
+```bash
+npm install
+npm install -g vercel
+vercel --prod
+```
+
+## 📁 Project Structure
+
+```
+solar_dryer_app/
+├── index.html                 # Homepage
+├── about.html                 # About page
+├── blog.html                  # Blog listing
+├── products.html              # Products page
+├── contact.html               # Contact form
+├── admin.html                 # Admin login
+├── admin-dashboard.html       # Admin panel
+├── admin-*.html               # Admin pages
+├── style.css                  # Main styles
+├── navbar.css                 # Navigation styles
+├── contact.css                # Contact styles
+├── admin.css                  # Admin styles
+├── config.js                  # Configuration
+├── script.js                  # Main script
+├── home-loader.js             # Home page loader
+├── contact.js                 # Contact form handler
+├── about-loader.js            # About page loader
+├── admin-login.js             # Admin login
+├── admin-*.js                 # Admin scripts
+├── public/js/api-client.js   # API client
+├── auth-manager.js            # Auth management
+├── package.json               # Dependencies
+├── vercel.json                # Vercel config
+└── README.md                  # This file
+```
+
+## 🔐 Admin Access
+
+**URL**: `/admin.html`
+
+**Default Credentials**:
+- Username: `admin`
+- Password: `admin123`
+
+⚠️ **Change password after first login!**
+
+## 📊 Features
+
+✅ Responsive design (mobile, tablet, desktop)
+✅ Admin dashboard
+✅ Product management
+✅ Blog system
+✅ Contact form
+✅ User management
+✅ Settings management
+✅ Message tracking
+✅ About section editor
+✅ Mentor/team management
+
+## 🛠️ Technologies Used
+
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Backend**: Node.js, Express.js
+- **Database**: MySQL (configurable)
+- **Authentication**: JWT
+- **Hosting**: Vercel (recommended)
+
+## 📝 Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start server
+npm start
+
+# Server runs on http://localhost:3000
+```
+
+## 🚀 Deploy to Vercel
+
+### Option 1: Via Dashboard (Easiest)
+1. Go to https://vercel.com/new
+2. Import GitHub repository
+3. Click Deploy
+
+### Option 2: Via CLI
+```bash
+vercel --prod
+```
+
+### Option 3: Via Batch File (Windows)
+```bash
+QUICK_DEPLOY.bat
+```
+
+## 🔧 Configuration
+
+Edit `config.js` for site settings:
+- Site name
+- Contact email
+- Phone number
+- Features
+
+## 📧 Environment Variables
+
+Create `.env` file:
+```
+NODE_ENV=production
+JWT_SECRET=your_secret_key
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=password
+DB_NAME=solardry_db
+```
+
+## 🌐 Deployment Checklist
+
+- [ ] Dependencies installed
+- [ ] `.env` configured
+- [ ] Code pushed to GitHub
+- [ ] Vercel account created
+- [ ] Project deployed
+- [ ] Custom domain configured (optional)
+- [ ] HTTPS verified
+- [ ] Admin login works
+- [ ] All pages accessible
+
+## 📞 Support
+
+- **Vercel Docs**: https://vercel.com/docs
+- **Node.js Docs**: https://nodejs.org/docs
+- **GitHub Help**: https://docs.github.com
+
+## 📄 Additional Documentation
+
+- [Complete Deployment Guide](DEPLOY_GUIDE.md)
+- [Windows Setup Guide](WINDOWS_SETUP.md)
+- [Quick Start Guide](QUICK_START.md)
+- [Installation Guide](INSTALLATION.md)
+
+## 🔒 Security Notes
+
+- Admin credentials stored in localStorage (demo)
+- For production, implement server-side auth
+- Never commit `.env` to Git
+- Change default passwords
+- Use HTTPS only
+
+## 📈 Performance
+
+- CDN included (Vercel)
+- Automatic HTTPS
+- Global distribution
+- Fast response times
+- Optimized images
+
+## 🤝 Contributing
+
+Pull requests welcome! Please:
+1. Fork repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Open pull request
+
+## 📄 License
+
+This project is proprietary and owned by SolarDry Solutions.
+
+## ✅ Status
+
+- **Version**: 1.0.0
+- **Status**: ✅ Production Ready
+- **Last Updated**: 2025-01-15
+- **Node Version**: 18.x
+- **npm Version**: 9.x
+
+---
+
+**Ready to deploy?** See [DEPLOY_GUIDE.md](DEPLOY_GUIDE.md)
 
 
 

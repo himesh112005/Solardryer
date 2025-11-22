@@ -4,9 +4,8 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { testConnection } from './config/database.js';
 
-// Routes
+// Import routes
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
 import articleRoutes from './routes/articles.js';
@@ -14,6 +13,7 @@ import messageRoutes from './routes/messages.js';
 import userRoutes from './routes/users.js';
 import settingsRoutes from './routes/settings.js';
 
+// Load environment variables
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -21,32 +21,26 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Middleware - CORS must be first
-const corsOptions = {
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-    optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
-
-// Body parser middleware
+// Middleware
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' 
+        ? ['https://yourdomain.com', 'https://www.yourdomain.com']
+        : '*'
+}));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-
-// Serve static files
 app.use(express.static(path.join(__dirname, '../')));
 
-// Request logging middleware
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`);
-    next();
-});
+// For Vercel, use in-memory database instead of MySQL in production
+let inMemoryData = {
+    users: JSON.parse(process.env.INITIAL_USERS || '[]'),
+    products: JSON.parse(process.env.INITIAL_PRODUCTS || '[]'),
+    articles: JSON.parse(process.env.INITIAL_ARTICLES || '[]'),
+    messages: [],
+    settings: {}
+};
 
-// API Routes with /api prefix
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/articles', articleRoutes);
@@ -56,60 +50,41 @@ app.use('/api/settings', settingsRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-    res.json({
-        status: 'OK',
+    res.json({ 
+        status: 'OK', 
         timestamp: new Date(),
-        environment: process.env.NODE_ENV || 'development'
+        environment: process.env.NODE_ENV 
     });
 });
 
-// Root route
+// Serve frontend
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-// 404 handler - must be after all routes
+// 404 handler
 app.use((req, res) => {
-    console.warn(`404 - Route not found: ${req.method} ${req.path}`);
     res.status(404).json({
         success: false,
-        message: 'Route not found',
-        path: req.path,
-        method: req.method
+        message: 'Route not found'
     });
 });
 
-// Error handling middleware - must be last
+// Error handling middleware
 app.use((err, req, res, next) => {
-    console.error('Error:', err);
-    res.status(err.status || 500).json({
+    console.error(err.stack);
+    res.status(500).json({
         success: false,
         message: 'Internal Server Error',
         error: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
 });
 
-const PORT = process.env.PORT || 5000;
-
 // Start server
-const startServer = async () => {
-    const dbConnected = await testConnection();
-    
-    if (!dbConnected) {
-        console.warn('⚠️  Database not available - running in offline mode');
-        console.log('ℹ️  Using fallback authentication');
-    }
-
-    app.listen(PORT, () => {
-        console.log(`\n🚀 Server running on http://localhost:${PORT}`);
-        console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-        if (dbConnected) {
-            console.log(`🗄️  Database: ${process.env.DB_NAME || 'solardry_db'}`);
-        }
-        console.log(`✅ API ready at http://localhost:${PORT}/api\n`);
-    });
-};
-
-startServer();
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📊 Environment: ${process.env.NODE_ENV}`);
+});
 
 export default app;

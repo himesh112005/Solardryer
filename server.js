@@ -4,17 +4,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import mysql from 'mysql2/promise';
 
-// Import routes
-import authRoutes from './api/routes/auth.js';
-import productRoutes from './api/routes/products.js';
-import articleRoutes from './api/routes/articles.js';
-import messageRoutes from './api/routes/messages.js';
-import userRoutes from './api/routes/users.js';
-import settingsRoutes from './api/routes/settings.js';
-
-// Load environment variables
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -26,57 +16,26 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
-// Database connection pool
-export const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
-
-// Test database connection
-pool.getConnection()
-    .then(connection => {
-        console.log('✅ MySQL Database Connected Successfully');
-        connection.release();
-    })
-    .catch(error => {
-        console.error('❌ Database Connection Error:', error.message);
-        process.exit(1);
-    });
-
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/articles', articleRoutes);
-app.use('/api/messages', messageRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/settings', settingsRoutes);
-
-// Health check endpoint
+// API Routes
 app.get('/api/health', (req, res) => {
-    res.json({ status: 'Server is running', timestamp: new Date() });
+    res.json({ 
+        status: 'Server is running',
+        timestamp: new Date(),
+        environment: process.env.NODE_ENV || 'development'
+    });
 });
 
-// Serve frontend
+// Serve static files
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        success: false,
-        message: 'Internal Server Error',
-        error: process.env.NODE_ENV === 'development' ? err.message : undefined
-    });
+// Serve other HTML files
+app.get('/:page.html', (req, res) => {
+    const { page } = req.params;
+    res.sendFile(path.join(__dirname, `${page}.html`));
 });
 
 // 404 handler
@@ -87,9 +46,23 @@ app.use((req, res) => {
     });
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📊 Database: ${process.env.DB_NAME}`);
+// Error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        success: false,
+        message: 'Internal Server Error'
+    });
 });
+
+const PORT = process.env.PORT || 3000;
+
+// Export for Vercel
+export default app;
+
+// Local server
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server running on http://localhost:${PORT}`);
+    });
+}
