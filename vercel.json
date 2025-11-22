@@ -2,10 +2,6 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "public/**",
       "use": "@vercel/static"
     },
@@ -45,5 +41,9 @@
     "PORT": "3000",
     "NODE_ENV": "production",
     "JWT_SECRET": "@jwt_secret"
-  }
+  },
+  "framework": "static",
+  "buildCommand": null,
+  "installCommand": "",
+  "framework": null
 }
