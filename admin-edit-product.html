@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - Admin Panel</title>
+    
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="admin.css">
+    
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <div class="nav-left">
+                <img src="image.png" alt="Dassault Systemes Foundation Logo" class="header-logo left-logo">
+                <a href="index.html" class="logo">SolarDry Solutions</a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin-dashboard.html">Admin</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="nav-right">
+                <img src="ssvps-college-of-engineering-dhule-logo.jpg" alt="Ssvps Logo" class="header-logo">
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h3>Admin Panel</h3>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="admin-dashboard.html">📊 Dashboard</a></li>
+                    <li><a href="admin-products.html" class="active">📦 Products</a></li>
+                    <li><a href="admin-blog.html">📝 Blog Articles</a></li>
+                    <li><a href="admin-messages.html">💬 Messages</a></li>
+                    <li><a href="admin-users.html">👥 Users</a></li>
+                    <li><a href="admin-settings.html">⚙️ Settings</a></li>
+                    <li><a href="#" onclick="logout(); return false;">🚪 Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Edit Product</h1>
+            </div>
+
+            <div class="admin-section">
+                <form class="admin-form" id="editProductForm">
+                    <div class="form-group">
+                        <label for="name">Product Name *</label>
+                        <input type="text" id="name" name="name" placeholder="Enter product name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="modelId">Model ID *</label>
+                            <input type="text" id="modelId" name="modelId" placeholder="e.g., S-100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price (₹) *</label>
+                            <input type="number" id="price" name="price" placeholder="0.00" min="0" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea id="description" name="description" rows="4" placeholder="Product description" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Product Image URL</label>
+                        <input type="url" id="image" name="image" placeholder="https://example.com/image.jpg">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status *</label>
+                        <select id="status" name="status" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Update Product</button>
+                        <a href="admin-products.html" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2025 SolarDry Solutions Admin Panel. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="public/js/api-client.js"></script>
+    <script src="auth-manager.js"></script>
+    <script src="admin-edit-product.js"></script>
+</body>
+</html>

@@ -166,6 +166,15 @@ font-size: 0.95rem;
 line-height: 1.6;
 }
 
+/* === Card Meta === */
+.card-meta {
+color: #999;
+font-size: 0.85rem;
+margin-bottom: 1rem;
+padding-bottom: 0.75rem;
+border-bottom: 1px solid var(--border-color);
+}
+
 /* === Read More Link === */
 .read-more-link {
 color: var(--primary-color);
@@ -295,4 +304,25 @@ padding: 1.25rem;
 .card-image {
 height: 12rem;
 }
+}
+
+/* === Category Tags === */
+.tag-economics {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.tag-product {
+    background: #d4edda;
+    color: #155724;
+}
+
+.tag-quality {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.tag-impact {
+    background: #f8d7da;
+    color: #721c24;
 }

@@ -1,4 +1,4 @@
-// Configuration file for easy deployment updates
+// Configuration file for SolarDry Solutions - Production Ready
 
 const CONFIG = {
     // Site Information
@@ -8,9 +8,18 @@ const CONFIG = {
     SITE_ADDRESS: 'SSVPS\'s BAPUSAHEB SHIVAJIRAO DEORE COLLEGE OF ENGINEERING, Department of Mechanical Engineering Deopur, Dhule, MS, India',
     
     // URLs
-    SITE_URL: window.location.origin,
-    REPO_URL: 'https://github.com/yourusername/solar_dryer_app',
-    DOCS_URL: 'https://yourdomain.com/docs',
+    SITE_URL: typeof window !== 'undefined' ? window.location.origin : 'http://localhost',
+    API_BASE_URL: typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5000',
+    
+    // API Endpoints
+    API_ENDPOINTS: {
+        AUTH: '/api/auth',
+        PRODUCTS: '/api/products',
+        ARTICLES: '/api/articles',
+        MESSAGES: '/api/messages',
+        USERS: '/api/users',
+        SETTINGS: '/api/settings'
+    },
     
     // Admin Settings
     ADMIN_SETTINGS: {
@@ -25,45 +34,35 @@ const CONFIG = {
     DB_VERSION: '1.0.0',
     AUTO_BACKUP_INTERVAL: 7 * 24 * 60 * 60 * 1000, // Weekly
     
-    // Email Settings
-    EMAIL_FROM: 'noreply@solardry.com',
-    SUPPORT_EMAIL: 'support@solardry.com',
-    ADMIN_EMAIL: 'admin@solardry.com',
-    
     // Feature Flags
     FEATURES: {
         ENABLE_BLOG: true,
         ENABLE_PRODUCTS: true,
         ENABLE_ADMIN: true,
         ENABLE_CONTACT_FORM: true,
-        ENABLE_USER_REGISTRATION: false,
+        ENABLE_API: true,
         MAINTENANCE_MODE: false
     },
     
-    // API Endpoints (if needed in future)
-    API_BASE_URL: 'https://api.solardry.com/v1',
-    
-    // Social Media
-    SOCIAL_LINKS: {
-        FACEBOOK: 'https://facebook.com/solardry',
-        TWITTER: 'https://twitter.com/solardry',
-        INSTAGRAM: 'https://instagram.com/solardry',
-        LINKEDIN: 'https://linkedin.com/company/solardry'
-    },
-    
-    // Analytics
-    GOOGLE_ANALYTICS_ID: 'UA-XXXXXXXXX-X',
-    ENABLE_ANALYTICS: true,
-    
     // Environment
-    ENVIRONMENT: 'production', // development, staging, production
+    ENVIRONMENT: 'production',
     DEBUG_MODE: false,
-    LOG_LEVEL: 'info' // debug, info, warn, error
+    LOG_LEVEL: 'error'
 };
 
 // Helper function to get config value
 function getConfig(path) {
     return path.split('.').reduce((obj, key) => obj?.[key], CONFIG);
+}
+
+// Logger function
+function log(message, level = 'info') {
+    const timestamp = new Date().toISOString();
+    const logMessage = `[${timestamp}] [${level.toUpperCase()}] ${message}`;
+    
+    if (CONFIG.DEBUG_MODE || level === 'error' || level === 'warn') {
+        console.log(logMessage);
+    }
 }
 
 // Export for use in other files

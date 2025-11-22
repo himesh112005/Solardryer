@@ -1,13 +1,23 @@
 class DatabaseManager {
     constructor() {
-        this.db = this.initializeDatabase();
+        try {
+            this.db = this.initializeDatabase();
+            console.log('Database initialized successfully');
+        } catch (error) {
+            console.error('Database initialization error:', error);
+            this.db = {};
+        }
     }
 
     // Initialize database from localStorage
     initializeDatabase() {
-        const stored = localStorage.getItem('solarDryDB');
-        if (stored) {
-            return JSON.parse(stored);
+        try {
+            const stored = localStorage.getItem('solarDryDB');
+            if (stored) {
+                return JSON.parse(stored);
+            }
+        } catch (error) {
+            console.error('Error reading from localStorage:', error);
         }
         
         // Default database structure
@@ -69,23 +79,30 @@ class DatabaseManager {
 
     // Save database to localStorage
     save() {
-        localStorage.setItem('solarDryDB', JSON.stringify(this.db));
+        try {
+            localStorage.setItem('solarDryDB', JSON.stringify(this.db));
+            return true;
+        } catch (error) {
+            console.error('Error saving to localStorage:', error);
+            return false;
+        }
     }
 
     // ============ USER METHODS ============
     getAllUsers() {
-        return this.db.users;
+        return this.db.users || [];
     }
 
     getUserById(id) {
-        return this.db.users.find(u => u.id === id);
+        return (this.db.users || []).find(u => u.id === id);
     }
 
     getUserByUsername(username) {
-        return this.db.users.find(u => u.username === username);
+        return (this.db.users || []).find(u => u.username === username);
     }
 
     addUser(user) {
+        if (!this.db.users) this.db.users = [];
         const newUser = {
             id: Math.max(...this.db.users.map(u => u.id), 0) + 1,
             ...user,
@@ -98,7 +115,7 @@ class DatabaseManager {
     }
 
     updateUser(id, userData) {
-        const user = this.db.users.find(u => u.id === id);
+        const user = (this.db.users || []).find(u => u.id === id);
         if (user) {
             Object.assign(user, userData);
             this.save();
@@ -108,7 +125,7 @@ class DatabaseManager {
     }
 
     deleteUser(id) {
-        const index = this.db.users.findIndex(u => u.id === id);
+        const index = (this.db.users || []).findIndex(u => u.id === id);
         if (index > -1) {
             this.db.users.splice(index, 1);
             this.save();
@@ -119,14 +136,15 @@ class DatabaseManager {
 
     // ============ PRODUCT METHODS ============
     getAllProducts() {
-        return this.db.products;
+        return this.db.products || [];
     }
 
     getProductById(id) {
-        return this.db.products.find(p => p.id === id);
+        return (this.db.products || []).find(p => p.id === id);
     }
 
     addProduct(product) {
+        if (!this.db.products) this.db.products = [];
         const newProduct = {
             id: Math.max(...this.db.products.map(p => p.id), 0) + 1,
             ...product,
@@ -138,7 +156,7 @@ class DatabaseManager {
     }
 
     updateProduct(id, productData) {
-        const product = this.db.products.find(p => p.id === id);
+        const product = (this.db.products || []).find(p => p.id === id);
         if (product) {
             Object.assign(product, productData);
             this.save();
@@ -148,7 +166,7 @@ class DatabaseManager {
     }
 
     deleteProduct(id) {
-        const index = this.db.products.findIndex(p => p.id === id);
+        const index = (this.db.products || []).findIndex(p => p.id === id);
         if (index > -1) {
             this.db.products.splice(index, 1);
             this.save();
@@ -159,14 +177,15 @@ class DatabaseManager {
 
     // ============ ARTICLE METHODS ============
     getAllArticles() {
-        return this.db.articles;
+        return this.db.articles || [];
     }
 
     getArticleById(id) {
-        return this.db.articles.find(a => a.id === id);
+        return (this.db.articles || []).find(a => a.id === id);
     }
 
     addArticle(article) {
+        if (!this.db.articles) this.db.articles = [];
         const newArticle = {
             id: Math.max(...this.db.articles.map(a => a.id), 0) + 1,
             ...article,
@@ -179,7 +198,7 @@ class DatabaseManager {
     }
 
     updateArticle(id, articleData) {
-        const article = this.db.articles.find(a => a.id === id);
+        const article = (this.db.articles || []).find(a => a.id === id);
         if (article) {
             Object.assign(article, articleData);
             this.save();
@@ -189,7 +208,7 @@ class DatabaseManager {
     }
 
     deleteArticle(id) {
-        const index = this.db.articles.findIndex(a => a.id === id);
+        const index = (this.db.articles || []).findIndex(a => a.id === id);
         if (index > -1) {
             this.db.articles.splice(index, 1);
             this.save();
@@ -200,14 +219,15 @@ class DatabaseManager {
 
     // ============ CONTACT MESSAGE METHODS ============
     getAllMessages() {
-        return this.db.contactMessages;
+        return this.db.contactMessages || [];
     }
 
     getMessageById(id) {
-        return this.db.contactMessages.find(m => m.id === id);
+        return (this.db.contactMessages || []).find(m => m.id === id);
     }
 
     addMessage(message) {
+        if (!this.db.contactMessages) this.db.contactMessages = [];
         const newMessage = {
             id: Math.max(...this.db.contactMessages.map(m => m.id), 0) + 1,
             ...message,
@@ -221,7 +241,7 @@ class DatabaseManager {
     }
 
     updateMessage(id, messageData) {
-        const message = this.db.contactMessages.find(m => m.id === id);
+        const message = (this.db.contactMessages || []).find(m => m.id === id);
         if (message) {
             Object.assign(message, messageData);
             this.save();
@@ -231,7 +251,7 @@ class DatabaseManager {
     }
 
     deleteMessage(id) {
-        const index = this.db.contactMessages.findIndex(m => m.id === id);
+        const index = (this.db.contactMessages || []).findIndex(m => m.id === id);
         if (index > -1) {
             this.db.contactMessages.splice(index, 1);
             this.save();
@@ -241,12 +261,12 @@ class DatabaseManager {
     }
 
     getUnreadMessageCount() {
-        return this.db.contactMessages.filter(m => m.status === 'unread').length;
+        return (this.db.contactMessages || []).filter(m => m.status === 'unread').length;
     }
 
     // ============ SETTINGS METHODS ============
     getSettings() {
-        return this.db.settings;
+        return this.db.settings || {};
     }
 
     updateSettings(settingsData) {
@@ -257,21 +277,21 @@ class DatabaseManager {
 
     // ============ SEARCH METHODS ============
     searchProducts(keyword) {
-        return this.db.products.filter(p => 
+        return (this.db.products || []).filter(p => 
             p.name.toLowerCase().includes(keyword.toLowerCase()) ||
             p.modelId.toLowerCase().includes(keyword.toLowerCase())
         );
     }
 
     searchArticles(keyword) {
-        return this.db.articles.filter(a => 
+        return (this.db.articles || []).filter(a => 
             a.title.toLowerCase().includes(keyword.toLowerCase()) ||
             a.excerpt.toLowerCase().includes(keyword.toLowerCase())
         );
     }
 
     searchMessages(keyword) {
-        return this.db.contactMessages.filter(m => 
+        return (this.db.contactMessages || []).filter(m => 
             m.name.toLowerCase().includes(keyword.toLowerCase()) ||
             m.email.toLowerCase().includes(keyword.toLowerCase()) ||
             m.subject.toLowerCase().includes(keyword.toLowerCase())
@@ -281,19 +301,24 @@ class DatabaseManager {
     // ============ STATISTICS METHODS ============
     getStatistics() {
         return {
-            totalProducts: this.db.products.length,
-            totalArticles: this.db.articles.length,
-            totalUsers: this.db.users.length,
-            totalMessages: this.db.contactMessages.length,
+            totalProducts: (this.db.products || []).length,
+            totalArticles: (this.db.articles || []).length,
+            totalUsers: (this.db.users || []).length,
+            totalMessages: (this.db.contactMessages || []).length,
             unreadMessages: this.getUnreadMessageCount(),
-            activeProducts: this.db.products.filter(p => p.status === 'active').length,
-            publishedArticles: this.db.articles.filter(a => a.status === 'published').length
+            activeProducts: (this.db.products || []).filter(p => p.status === 'active').length,
+            publishedArticles: (this.db.articles || []).filter(a => a.status === 'published').length
         };
     }
 
     // ============ EXPORT/IMPORT METHODS ============
     exportData() {
-        return JSON.stringify(this.db, null, 2);
+        try {
+            return JSON.stringify(this.db, null, 2);
+        } catch (error) {
+            console.error('Export error:', error);
+            return null;
+        }
     }
 
     importData(jsonData) {
@@ -320,4 +345,9 @@ class DatabaseManager {
 }
 
 // Create global database instance
-const db = new DatabaseManager();
+try {
+    const db = new DatabaseManager();
+    console.log('Database instance created successfully');
+} catch (error) {
+    console.error('Failed to create database instance:', error);
+}

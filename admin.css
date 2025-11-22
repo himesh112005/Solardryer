@@ -424,6 +424,43 @@ body {
     border-bottom: 2px solid var(--light-color);
 }
 
+.settings-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.settings-section .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.settings-section .form-group label {
+    font-weight: 600;
+    color: var(--dark-color);
+    font-size: 0.95rem;
+}
+
+.settings-section .form-group input,
+.settings-section .form-group textarea,
+.settings-section .form-group select {
+    padding: 0.85rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.settings-section .form-group input:focus,
+.settings-section .form-group textarea:focus,
+.settings-section .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
+}
+
 .button-group {
     display: flex;
     gap: 1rem;
@@ -435,179 +472,80 @@ body {
     min-width: 150px;
 }
 
-/* === Role Badge === */
-.role-badge {
-    padding: 0.35rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    display: inline-block;
+.btn-warning {
+    background: #ffc107;
+    color: #000;
 }
 
-.role-badge.admin {
-    background: #d4edda;
-    color: #155724;
+.btn-warning:hover {
+    background: #e0a800;
 }
 
-.role-badge.moderator {
-    background: #d1ecf1;
-    color: #0c5460;
-}
-
-.role-badge.user {
-    background: #e7d4f5;
-    color: #5a1a7f;
-}
-
-/* === Messages Statistics === */
-.messages-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.stat-box {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-color) 100%);
-    color: var(--white);
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    text-align: center;
-    box-shadow: var(--shadow);
-}
-
-.stat-label {
-    display: block;
-    font-size: 0.9rem;
-    opacity: 0.9;
-    margin-bottom: 0.5rem;
-}
-
-.stat-value {
-    display: block;
-    font-size: 2rem;
-    font-weight: 700;
-}
-
-.stat-value.unread {
-    color: #ff6b6b;
-}
-
-.stat-value.read {
-    color: #51cf66;
-}
-
-/* === Unread Row Highlight === */
-.unread-row {
-    background: #f0f8ff;
-    font-weight: 600;
-}
-
-/* === Filter Controls === */
-.filter-controls {
+/* === Form Actions === */
+.form-actions {
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
+    margin-top: 1rem;
 }
 
-.filter-controls input,
-.filter-controls select {
-    padding: 0.75rem;
+.form-actions .btn {
+    flex: 1;
+}
+
+/* === Admin Form === */
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.admin-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.admin-form .form-group label {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.admin-form .form-group input,
+.admin-form .form-group textarea,
+.admin-form .form-group select {
+    padding: 0.85rem;
     border: 1px solid #ddd;
     border-radius: var(--border-radius);
+    font-family: inherit;
     font-size: 1rem;
 }
 
-.filter-controls input {
-    flex: 1;
-    min-width: 200px;
+.admin-form .form-group input:focus,
+.admin-form .form-group textarea:focus,
+.admin-form .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
 }
 
-/* === Message Details Modal === */
-.large-modal {
-    max-width: 800px;
-}
-
-.message-header {
+.form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 2px solid var(--light-color);
-    margin-bottom: 1.5rem;
+    gap: 1.5rem;
 }
 
-.message-sender h3 {
-    margin-top: 0;
-    color: var(--dark-color);
-}
-
-.message-sender p {
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
-}
-
-.message-sender a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.message-sender a:hover {
-    text-decoration: underline;
-}
-
-.message-meta {
-    text-align: right;
-}
-
-.message-meta p {
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
-}
-
-.message-subject {
-    background: var(--light-color);
-    padding: 1rem;
-    border-radius: var(--border-radius);
-    margin-bottom: 1.5rem;
-}
-
-.message-subject h4 {
-    margin: 0;
-    color: var(--dark-color);
-}
-
-.message-body {
-    background: #fafafa;
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    border-left: 4px solid var(--primary-color);
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-
-.message-reply {
-    background: #d4edda;
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    border-left: 4px solid #28a745;
-    margin-top: 1.5rem;
-}
-
-.message-reply h4 {
-    margin-top: 0;
-    color: #155724;
-}
-
-.message-reply p {
-    color: #155724;
-    margin-bottom: 0.5rem;
-}
-
-.message-reply small {
-    color: #0c5460;
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .button-group .btn {
+        width: 100%;
+    }
 }
 
 /* === Responsive Design === */

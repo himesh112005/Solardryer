@@ -40,9 +40,10 @@
                     <li><a href="admin-dashboard.html">📊 Dashboard</a></li>
                     <li><a href="admin-products.html" class="active">📦 Products</a></li>
                     <li><a href="admin-blog.html">📝 Blog Articles</a></li>
+                    <li><a href="admin-messages.html">💬 Messages</a></li>
                     <li><a href="admin-users.html">👥 Users</a></li>
                     <li><a href="admin-settings.html">⚙️ Settings</a></li>
-                    <li><a href="index.html" onclick="logout()">🚪 Logout</a></li>
+                    <li><a href="#" onclick="logout(); return false;">🚪 Logout</a></li>
                 </ul>
             </nav>
         </aside>
@@ -53,36 +54,36 @@
             </div>
 
             <div class="admin-section">
-                <form class="admin-form" id="addProductForm" onsubmit="handleAddProduct(event)">
+                <form class="admin-form" id="addProductForm">
                     <div class="form-group">
-                        <label for="product-name">Product Name *</label>
-                        <input type="text" id="product-name" name="product-name" required>
+                        <label for="name">Product Name *</label>
+                        <input type="text" id="name" name="name" placeholder="Enter product name" required>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="model-id">Model ID *</label>
-                            <input type="text" id="model-id" name="model-id" required>
+                            <label for="modelId">Model ID *</label>
+                            <input type="text" id="modelId" name="modelId" placeholder="e.g., S-100" required>
                         </div>
                         <div class="form-group">
                             <label for="price">Price (₹) *</label>
-                            <input type="number" id="price" name="price" required>
+                            <input type="number" id="price" name="price" placeholder="0.00" min="0" step="0.01" required>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="description">Description *</label>
-                        <textarea id="description" name="description" rows="5" required></textarea>
+                        <textarea id="description" name="description" rows="4" placeholder="Product description" required></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="product-image">Product Image</label>
-                        <input type="file" id="product-image" name="product-image" accept="image/*">
+                        <label for="image">Product Image URL</label>
+                        <input type="url" id="image" name="image" placeholder="https://example.com/image.jpg">
                     </div>
 
                     <div class="form-group">
-                        <label for="status">Status</label>
-                        <select id="status" name="status">
+                        <label for="status">Status *</label>
+                        <select id="status" name="status" required>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
@@ -105,6 +106,9 @@
         </div>
     </footer>
 
-    <script src="admin.js"></script>
+    <script src="config.js"></script>
+    <script src="public/js/api-client.js"></script>
+    <script src="auth-manager.js"></script>
+    <script src="admin-add-product.js"></script>
 </body>
 </html>

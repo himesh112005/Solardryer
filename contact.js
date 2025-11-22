@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contactForm');
 
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const name = document.getElementById('name').value.trim();
@@ -55,46 +55,141 @@ document.addEventListener('DOMContentLoaded', () => {
                 showNotification('Please enter a valid phone number', 'error');
                 return;
             }
-            
-            // Save to database using DatabaseManager
-            const messageData = {
-                name: name,
-                email: email,
-                phone: phone,
-                subject: subject,
-                message: message
-            };
-            
+
             try {
-                const result = db.addMessage(messageData);
+                // Show loading state
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+
+                console.log('Attempting to send message via API...');
+
+                // Check if backend is available
+                const healthCheck = await fetch(`${api.baseURL}/api/health`).catch(() => null);
                 
-                // Show success notification
-                showNotification('✅ Thank you! Your message has been sent successfully. We will get back to you soon.', 'success');
-                
-                // Send email notification (simulated)
-                sendEmailNotification(messageData);
-                
-                // Reset form
-                contactForm.reset();
-                
-                // Scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                
-                // Clear notification after 5 seconds
-                setTimeout(() => {
-                    const notification = document.querySelector('.notification');
-                    if (notification) {
-                        notification.remove();
+                if (!healthCheck) {
+                    console.warn('Backend server not responding, using local storage fallback');
+                    saveMessageLocally(name, email, phone, subject, message);
+                    showNotification('✅ Message saved locally. Admin will review it soon.', 'success');
+                    contactForm.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                    return;
+                }
+
+                // Try API if backend is available
+                if (typeof api !== 'undefined' && api.sendMessage) {
+                    const result = await api.sendMessage({
+                        name, email, phone, subject, message
+                    });
+                    
+                    if (result.success) {
+                        showNotification('✅ Thank you! Your message has been sent successfully. We will get back to you soon.', 'success');
+                        contactForm.reset();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        console.error('API error:', result.message);
+                        // Fallback to local storage
+                        saveMessageLocally(name, email, phone, subject, message);
+                        showNotification('✅ Message saved. Thank you for contacting us!', 'success');
+                        contactForm.reset();
                     }
-                }, 5000);
+                } else {
+                    // No API, use local storage
+                    saveMessageLocally(name, email, phone, subject, message);
+                    showNotification('✅ Message saved. Thank you for contacting us!', 'success');
+                    contactForm.reset();
+                }
+
+                // Restore button
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
                 
             } catch (error) {
-                showNotification('❌ Error sending message. Please try again.', 'error');
                 console.error('Error:', error);
+                
+                // Save to local storage as fallback
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+                
+                saveMessageLocally(name, email, phone, subject, message);
+                showNotification('✅ Message saved successfully. We will review it soon.', 'success');
+                contactForm.reset();
+                
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
             }
         });
     }
 });
+
+// Save message locally
+function saveMessageLocally(name, email, phone, subject, message) {
+    const messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
+    
+    const newMessage = {
+        id: Date.now(),
+        name: name,
+        email: email,
+        phone: phone,
+        subject: subject,
+        message: message,
+        status: 'unread',
+        createdDate: new Date().toISOString()
+    };
+    
+    messages.push(newMessage);
+    localStorage.setItem('contactMessages', JSON.stringify(messages));
+    
+    console.log('Message saved to local storage:', newMessage);
+}
+
+// Setup fallback contact form (if API not available)
+function setupFallbackContact() {
+    const contactForm = document.getElementById('contactForm');
+    
+    if (!contactForm) return;
+
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const subject = document.getElementById('subject').value.trim();
+        const message = document.getElementById('message').value.trim();
+        
+        // Validation
+        if (!name || !email || !phone || !subject || !message) {
+            showNotification('Please fill in all fields', 'error');
+            return;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return;
+        }
+        
+        const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+        if (!phoneRegex.test(phone)) {
+            showNotification('Please enter a valid phone number', 'error');
+            return;
+        }
+
+        // Save locally
+        saveMessageLocally(name, email, phone, subject, message);
+        
+        showNotification('✅ Message saved successfully. We will review it soon.', 'success');
+        contactForm.reset();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 
 // Show notification
 function showNotification(message, type) {
@@ -123,23 +218,4 @@ function showNotification(message, type) {
             notification.remove();
         }
     }, 5000);
-}
-
-// Send email notification (simulated - in production use real email service)
-function sendEmailNotification(messageData) {
-    console.log('Email notification sent to admin:', messageData.email);
-    
-    // In production, you would call an email service API here
-    // Example: sendToEmailService(messageData)
-    
-    // Store notification log
-    const notifications = JSON.parse(localStorage.getItem('notificationLog')) || [];
-    notifications.push({
-        type: 'contact_message',
-        from: messageData.email,
-        subject: messageData.subject,
-        timestamp: new Date().toISOString(),
-        status: 'sent'
-    });
-    localStorage.setItem('notificationLog', JSON.stringify(notifications));
 }

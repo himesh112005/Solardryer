@@ -40,9 +40,10 @@
                     <li><a href="admin-dashboard.html">📊 Dashboard</a></li>
                     <li><a href="admin-products.html">📦 Products</a></li>
                     <li><a href="admin-blog.html" class="active">📝 Blog Articles</a></li>
+                    <li><a href="admin-messages.html">💬 Messages</a></li>
                     <li><a href="admin-users.html">👥 Users</a></li>
                     <li><a href="admin-settings.html">⚙️ Settings</a></li>
-                    <li><a href="index.html" onclick="logout()">🚪 Logout</a></li>
+                    <li><a href="#" onclick="logout(); return false;">🚪 Logout</a></li>
                 </ul>
             </nav>
         </aside>
@@ -50,50 +51,23 @@
         <main class="admin-content">
             <div class="admin-header">
                 <h1>Manage Blog Articles</h1>
-                <a href="admin-add-blog.html" class="btn">+ Add New Article</a>
+                <a href="admin-add-article.html" class="btn">+ Add New Article</a>
             </div>
 
             <div class="admin-section">
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>Article Title</th>
+                            <th>Title</th>
                             <th>Author</th>
                             <th>Published Date</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="articles-table">
                         <tr>
-                            <td>Stop Wasting Fuel: The Hidden Cost Savings</td>
-                            <td>Admin</td>
-                            <td>2025-01-10</td>
-                            <td><span class="status active">Published</span></td>
-                            <td>
-                                <a href="admin-edit-blog.html?id=1" class="btn-small">Edit</a>
-                                <button onclick="deleteBlog(1)" class="btn-small delete">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Direct vs. Indirect: Which Solar Dryer Model</td>
-                            <td>Admin</td>
-                            <td>2025-01-08</td>
-                            <td><span class="status active">Published</span></td>
-                            <td>
-                                <a href="admin-edit-blog.html?id=2" class="btn-small">Edit</a>
-                                <button onclick="deleteBlog(2)" class="btn-small delete">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>How Solar Technology Guarantees Cleaner Food</td>
-                            <td>Admin</td>
-                            <td>2025-01-05</td>
-                            <td><span class="status active">Published</span></td>
-                            <td>
-                                <a href="admin-edit-blog.html?id=3" class="btn-small">Edit</a>
-                                <button onclick="deleteBlog(3)" class="btn-small delete">Delete</button>
-                            </td>
+                            <td colspan="5" class="text-center">Loading articles...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -109,6 +83,9 @@
         </div>
     </footer>
 
-    <script src="admin.js"></script>
+    <script src="config.js"></script>
+    <script src="public/js/api-client.js"></script>
+    <script src="auth-manager.js"></script>
+    <script src="admin-blog.js"></script>
 </body>
 </html>

@@ -43,7 +43,7 @@
                     <li><a href="admin-messages.html">💬 Messages</a></li>
                     <li><a href="admin-users.html">👥 Users</a></li>
                     <li><a href="admin-settings.html" class="active">⚙️ Settings</a></li>
-                    <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+                    <li><a href="#" onclick="logout(); return false;">🚪 Logout</a></li>
                 </ul>
             </nav>
         </aside>
@@ -54,21 +54,29 @@
             </div>
 
             <div class="settings-container">
+                <!-- Quick Links -->
+                <div class="settings-section">
+                    <h2>Content Management</h2>
+                    <div class="button-group">
+                        <a href="admin-edit-about.html" class="btn">📄 Edit About Section</a>
+                    </div>
+                </div>
+
                 <!-- Site Settings -->
                 <div class="settings-section">
                     <h2>Site Settings</h2>
-                    <form id="siteSettingsForm" onsubmit="saveSiteSettings(event)">
+                    <form id="siteSettingsForm">
                         <div class="form-group">
-                            <label for="siteName">Site Name</label>
-                            <input type="text" id="siteName" value="SolarDry Solutions">
+                            <label for="siteName">Site Name *</label>
+                            <input type="text" id="siteName" placeholder="Enter site name" required>
                         </div>
                         <div class="form-group">
-                            <label for="siteEmail">Contact Email</label>
-                            <input type="email" id="siteEmail" value="solardryer@gmail.com">
+                            <label for="siteEmail">Contact Email *</label>
+                            <input type="email" id="siteEmail" placeholder="contact@example.com" required>
                         </div>
                         <div class="form-group">
-                            <label for="sitePhone">Phone Number</label>
-                            <input type="tel" id="sitePhone" value="+91 94230 80717">
+                            <label for="sitePhone">Phone Number *</label>
+                            <input type="tel" id="sitePhone" placeholder="+91 XXXXX XXXXX" required>
                         </div>
                         <button type="submit" class="btn">Save Changes</button>
                     </form>
@@ -77,18 +85,18 @@
                 <!-- Security Settings -->
                 <div class="settings-section">
                     <h2>Security Settings</h2>
-                    <form id="securityForm" onsubmit="changePassword(event)">
+                    <form id="securityForm">
                         <div class="form-group">
-                            <label for="currentPassword">Current Password</label>
-                            <input type="password" id="currentPassword" required>
+                            <label for="currentPassword">Current Password *</label>
+                            <input type="password" id="currentPassword" placeholder="Enter current password" required>
                         </div>
                         <div class="form-group">
-                            <label for="newPassword">New Password</label>
-                            <input type="password" id="newPassword" required>
+                            <label for="newPassword">New Password *</label>
+                            <input type="password" id="newPassword" placeholder="Enter new password (min 6 characters)" minlength="6" required>
                         </div>
                         <div class="form-group">
-                            <label for="confirmPassword">Confirm Password</label>
-                            <input type="password" id="confirmPassword" required>
+                            <label for="confirmPassword">Confirm Password *</label>
+                            <input type="password" id="confirmPassword" placeholder="Confirm new password" minlength="6" required>
                         </div>
                         <button type="submit" class="btn">Change Password</button>
                     </form>
@@ -97,14 +105,14 @@
                 <!-- Admin Profile -->
                 <div class="settings-section">
                     <h2>Admin Profile</h2>
-                    <form id="profileForm" onsubmit="updateProfile(event)">
+                    <form id="profileForm">
                         <div class="form-group">
-                            <label for="adminName">Admin Name</label>
-                            <input type="text" id="adminName" value="Administrator" required>
+                            <label for="adminName">Admin Name *</label>
+                            <input type="text" id="adminName" placeholder="Your name" value="Administrator" required>
                         </div>
                         <div class="form-group">
-                            <label for="adminEmail">Admin Email</label>
-                            <input type="email" id="adminEmail" value="admin@solardry.com" required>
+                            <label for="adminEmail">Admin Email *</label>
+                            <input type="email" id="adminEmail" placeholder="your@email.com" value="admin@solardry.com" required>
                         </div>
                         <button type="submit" class="btn">Update Profile</button>
                     </form>
@@ -114,8 +122,8 @@
                 <div class="settings-section">
                     <h2>Backup & Maintenance</h2>
                     <div class="button-group">
-                        <button onclick="backupData()" class="btn">📥 Backup Data</button>
-                        <button onclick="clearCache()" class="btn">🗑️ Clear Cache</button>
+                        <button onclick="backupData()" class="btn">📥 Download Backup</button>
+                        <button onclick="clearCache()" class="btn btn-warning">🗑️ Clear Cache</button>
                         <button onclick="restoreDefaults()" class="btn delete">⚠️ Restore Defaults</button>
                     </div>
                 </div>
@@ -131,8 +139,9 @@
         </div>
     </footer>
 
-    <script src="admin-login.js"></script>
-    <script src="admin.js"></script>
+    <script src="config.js"></script>
+    <script src="public/js/api-client.js"></script>
+    <script src="auth-manager.js"></script>
     <script src="admin-settings.js"></script>
 </body>
 </html>

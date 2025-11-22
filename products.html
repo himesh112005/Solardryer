@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Products - SolarDry Solutions. Discover our solar drying solutions.">
     <title>Our Products - SolarDry Solutions</title>
     
     <link rel="stylesheet" href="navbar.css">
@@ -44,39 +45,8 @@
             <h2>Solar Dryer Models</h2>
             <p>From small-scale farms to large industrial processing, we showcase our range of innovative solutions below.</p>
             
-            <div class="product-grid">
-                <div class="product-card">
-                    <img src="https://placehold.co/300x200/2a9d8f/ffffff?text=Small+Farm+Dryer" alt="Small Farm Dryer">
-                    <div class="product-card-content">
-                        <span class="product-type">Model ID: S-100</span>
-                        <h3>Small Farm Unit</h3>
-                        <p>Perfect for individual farmers, this compact unit offers high efficiency for small batches of produce.</p>
-                        <div class="price">₹25,000.00</div>
-                        <a href="mailto:solardryer@gmail.com?subject=Inquiry about Small Farm Unit" class="btn">Inquire Now</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="https://placehold.co/300x200/e9c46a/264653?text=Commercial+Dryer" alt="Commercial Dryer">
-                    <div class="product-card-content">
-                        <span class="product-type">Model ID: C-500</span>
-                        <h3>Commercial Processor</h3>
-                        <p>A medium-scale solution designed for co-ops and small businesses requiring larger capacity and faster drying times.</p>
-                        <div class="price">₹150,000.00</div>
-                        <a href="mailto:solardryer@gmail.com?subject=Inquiry about Commercial Processor" class="btn">Inquire Now</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <img src="https://placehold.co/300x200/f4a261/ffffff?text=Industrial+System" alt="Industrial System">
-                    <div class="product-card-content">
-                        <span class="product-type">Model ID: I-2000</span>
-                        <h3>Industrial High-Flow System</h3>
-                        <p>The top-tier solution for large-volume industrial applications, featuring automated controls and continuous flow.</p>
-                        <div class="price">₹500,000.00</div>
-                        <a href="mailto:solardryer@gmail.com?subject=Inquiry about Industrial High-Flow System" class="btn">Inquire Now</a>
-                    </div>
-                </div>
+            <div class="product-grid" id="productGrid">
+                <div class="text-center" style="padding: 2rem; grid-column: 1/-1;">Loading products...</div>
             </div>
         </div>
     </section>
@@ -116,6 +86,8 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="config.js"></script>
+    <script src="public/js/api-client.js"></script>
+    <script src="product-loader.js"></script>
 </body>
 </html>
