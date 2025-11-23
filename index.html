@@ -17,6 +17,63 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     
+    <style>
+        /* Mobile Navigation Styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 3px 0;
+            transition: 0.4s;
+        }
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+                margin-left: auto; /* Push to right */
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: #fff;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                padding: 1rem 0;
+                z-index: 1000;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                text-align: center;
+                margin: 10px 0;
+            }
+            .navbar .container {
+                flex-wrap: wrap;
+                position: relative;
+            }
+            /* Hide right logo on very small screens if needed, or adjust layout */
+            .nav-right {
+                display: none; 
+            }
+        }
+    </style>
+
+    <!-- 
+        Git Update Guide: See GIT_GUIDE.md or GIT_QUICK_COMMANDS.txt
+        To update GitHub: git add . && git commit -m "msg" && git push origin main
+        Or use: UPDATE_GITHUB.bat (Windows) or UPDATE_GITHUB.sh (Mac/Linux)
+
+        DEPLOYMENT NOTE: vercel.json is configured to skip npm install to avoid package errors.
+    -->
 </head>
 <body>
 
@@ -26,6 +83,14 @@
                 <img src="image.png" alt="Dassault Systemes Foundation Logo" class="header-logo left-logo">
                 <a href="index.html" class="logo">SolarDry Solutions</a>
             </div>
+            
+            <!-- Mobile Menu Toggle Button -->
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+
             <nav>
                 <ul class="nav-links">
                     <li><a href="index.html" class="active">Home</a></li>
@@ -153,5 +218,19 @@
     <script src="config.js"></script>
     <script src="public/js/api-client.js"></script>
     <script src="home-loader.js"></script>
+    
+    <script>
+        // Mobile Menu Toggle Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
