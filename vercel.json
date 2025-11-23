@@ -44,6 +44,7 @@
   },
   "framework": "static",
   "buildCommand": null,
-  "installCommand": "",
-  "framework": null
+  "installCommand": "echo 'Skipping npm install'",
+  "framework": null,
+  "outputDirectory": "."
 }
