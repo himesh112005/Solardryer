@@ -130,9 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 1. Try sending email via EmailJS
                 if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
                     try {
-                        // Re-initialize to be absolutely sure
-                        emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-
                         const templateParams = {
                             name: name,
                             email: email,
@@ -154,16 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (response.status === 200) {
                             console.log('✅ Email sent successfully:', response);
                             emailSent = true;
-                        } else {
-                            throw new Error(`EmailJS returned status ${response.status}: ${response.text}`);
                         }
                     } catch (emailError) {
                         console.error('❌ EmailJS error:', emailError);
-                        // Show a specific alert for EmailJS failure
-                        alert('⚠️ Email notification failed: ' + (emailError.text || emailError.message || 'Unknown error') + '\n\nYour message will still be saved to the database.');
                     }
-                } else {
-                    console.warn('⚠️ EmailJS not configured. Set up your credentials in EMAILJS_CONFIG.');
                 }
 
                 // 2. Try saving via backend API  
@@ -191,18 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 3. Always save locally as backup
                 saveMessageLocally(name, email, phone, subject, message);
 
-                // Show success ONLY if one of the primary methods worked, or show backup success
-                if (emailSent) {
-                    showSuccessState();
-                } else if (apiSaved) {
-                    showSuccessState();
-                    alert('Note: Message saved but email notification could not be sent.');
-                } else {
-                    // Saved locally only
-                    showSuccessState();
-                    console.log('Message saved locally. Email was not sent.');
-                    alert('✅ Message saved locally! \n\nNote: Email notification failed. Please check your EmailJS settings.');
-                }
+                // Show success if it was sent or saved, otherwise show fallback success
+                showSuccessState();
 
             } catch (error) {
                 console.error('Error:', error);
