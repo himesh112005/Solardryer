@@ -1,27 +1,31 @@
 // Check login status on page load
 document.addEventListener('DOMContentLoaded', function() {
-    checkAdminLogin();
+    // Use authManager if available, otherwise fallback
+    if (typeof authManager !== 'undefined') {
+        authManager.protectPage('admin.html');
+    } else {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'admin.html';
+            return;
+        }
+    }
+    
     displayCurrentDate();
     displayAdminUsername();
     loadRecentMessages();
     updateStatistics();
 });
 
-// Check if user is logged in
-function checkAdminLogin() {
-    const isLoggedIn = sessionStorage.getItem('adminLoggedIn') || localStorage.getItem('adminLoggedIn');
-    
-    if (!isLoggedIn) {
-        window.location.href = 'admin.html';
-    }
-}
-
 // Display admin username
 function displayAdminUsername() {
-    const username = sessionStorage.getItem('adminUsername') || localStorage.getItem('adminUsername') || 'Admin';
+    const user = (typeof authManager !== 'undefined' && authManager.getUser) 
+        ? authManager.getUser() 
+        : JSON.parse(localStorage.getItem('user'));
+    
     const adminInfoElement = document.getElementById('admin-username');
-    if (adminInfoElement) {
-        adminInfoElement.textContent = `Welcome, ${username}`;
+    if (adminInfoElement && user) {
+        adminInfoElement.textContent = `Welcome, ${user.username}`;
     }
 }
 
@@ -35,38 +39,41 @@ function displayCurrentDate() {
     }
 }
 
-// Load recent messages
+// Load recent messages from localStorage
 function loadRecentMessages() {
-    const messages = db.getAllMessages().slice(-5).reverse();
     const tbody = document.getElementById('messages-tbody');
     
     if (!tbody) return;
+    
+    const messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
     
     if (messages.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center">No messages yet</td></tr>';
         return;
     }
     
-    tbody.innerHTML = messages.map(msg => `
+    const recentMessages = messages.slice(-5).reverse();
+    
+    tbody.innerHTML = recentMessages.map(msg => `
         <tr>
             <td>${msg.name}</td>
             <td>${msg.email}</td>
             <td>${msg.subject}</td>
             <td>${new Date(msg.createdDate).toLocaleDateString()}</td>
             <td><span class="status ${msg.status}">${msg.status}</span></td>
-            <td><a href="admin-messages.html?id=${msg.id}" class="btn-small">View</a></td>
+            <td><a href="admin-messages.html" class="btn-small">View</a></td>
         </tr>
     `).join('');
 }
 
 // Update dashboard statistics
 function updateStatistics() {
-    const stats = db.getStatistics();
+    const messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
+    const unreadCount = messages.filter(m => m.status === 'unread').length;
     
-    // Update message count
     const messageCountEl = document.getElementById('message-count');
     if (messageCountEl) {
-        messageCountEl.textContent = stats.unreadMessages;
+        messageCountEl.textContent = unreadCount;
     }
 }
 
@@ -117,12 +124,13 @@ function deleteBlog(id) {
 // Logout function
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
-        sessionStorage.removeItem('adminLoggedIn');
-        sessionStorage.removeItem('adminUsername');
-        localStorage.removeItem('adminLoggedIn');
-        localStorage.removeItem('adminUsername');
-        
-        alert('Logged out successfully!');
-        window.location.href = 'admin.html';
+        if (typeof authManager !== 'undefined') {
+            authManager.logout();
+        } else {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('rememberMe');
+            window.location.href = 'admin.html';
+        }
     }
 }
