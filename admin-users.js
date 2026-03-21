@@ -73,7 +73,7 @@ function getDefaultUsers() {
         {
             id: 1,
             username: 'admin',
-            email: 'admin@solardry.com',
+            email: 'sanjeev.suryawanshi269@gmail.com',
             password: adminPassword,
             role: 'admin',
             status: 'active',

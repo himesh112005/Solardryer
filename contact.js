@@ -1,20 +1,54 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Note: The original HTML did not have a full mobile menu,
-    // but this script adds basic functionality for the toggle button.
+// ============================================================
+// Contact Page - EmailJS Integration + Form Handling
+// ============================================================
+// 
+// This uses EmailJS (https://www.emailjs.com) to send emails
+// directly from the frontend. The admin will receive an email
+// notification for every contact form submission.
+//
+// SETUP INSTRUCTIONS:
+// 1. Go to https://www.emailjs.com and create a free account
+// 2. Add an Email Service (e.g., Gmail) and note the SERVICE_ID
+// 3. Create an Email Template with these variables:
+//    {{from_name}}, {{from_email}}, {{phone}}, {{subject}}, {{message}}
+// 4. Note the TEMPLATE_ID
+// 5. Go to Account > General and note your PUBLIC_KEY
+// 6. Replace the values below in EMAILJS_CONFIG
+// ============================================================
+
+const EMAILJS_CONFIG = {
+    // ⚠️ REPLACE THESE WITH YOUR ACTUAL EmailJS CREDENTIALS
+    PUBLIC_KEY: 'YOUR_EMAILJS_PUBLIC_KEY',       // From EmailJS Account > General
+    SERVICE_ID: 'YOUR_EMAILJS_SERVICE_ID',       // From EmailJS Email Services
+    TEMPLATE_ID: 'YOUR_EMAILJS_TEMPLATE_ID',     // From EmailJS Email Templates
     
+    // Admin email where notifications will be sent
+    ADMIN_EMAIL: 'sanjeev.suryawanshi269@gmail.com'
+};
+
+// Initialize EmailJS
+(function() {
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+        console.log('✅ EmailJS initialized successfully');
+    } else {
+        console.warn('⚠️ EmailJS SDK not loaded. Emails will not be sent.');
+    }
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+    // ========================
+    // Mobile Menu Toggle
+    // ========================
     const menuToggle = document.getElementById('menu-toggle');
     const navLinks = document.getElementById('nav-links');
 
     if (menuToggle && navLinks) {
-        // Functionality for the mobile menu toggle
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('open');
-            
-            // Toggle the icon (from burger '≡' to X '✖')
             menuToggle.innerHTML = navLinks.classList.contains('open') ? '&#x2716;' : '&#x2261;';
         });
         
-        // Close menu if a link is clicked (good mobile UX)
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 if (navLinks.classList.contains('open')) {
@@ -25,7 +59,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Contact form handling
+    // ========================
+    // Character Count
+    // ========================
+    const messageField = document.getElementById('message');
+    const charCount = document.getElementById('charCount');
+    
+    if (messageField && charCount) {
+        messageField.addEventListener('input', () => {
+            const len = messageField.value.length;
+            const max = 1000;
+            charCount.textContent = `${len} / ${max}`;
+            
+            charCount.classList.remove('warning', 'limit');
+            if (len > max) {
+                charCount.classList.add('limit');
+            } else if (len > max * 0.8) {
+                charCount.classList.add('warning');
+            }
+        });
+    }
+
+    // ========================
+    // Contact Form Submission
+    // ========================
     const contactForm = document.getElementById('contactForm');
 
     if (contactForm) {
@@ -35,12 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
-            const subject = document.getElementById('subject').value.trim();
+            const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value.trim();
             
             // Validation
             if (!name || !email || !phone || !subject || !message) {
-                showNotification('Please fill in all fields', 'error');
+                showNotification('Please fill in all required fields', 'error');
                 return;
             }
             
@@ -56,79 +113,150 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnIcon = submitBtn.querySelector('.btn-icon');
+            const btnLoader = submitBtn.querySelector('.btn-loader');
+            
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnIcon.style.display = 'none';
+            btnLoader.style.display = 'inline-flex';
+
             try {
-                // Show loading state
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Sending...';
+                let emailSent = false;
+                let apiSaved = false;
 
-                console.log('Attempting to send message via API...');
+                // 1. Try sending email via EmailJS
+                if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+                    try {
+                        const templateParams = {
+                            from_name: name,
+                            from_email: email,
+                            phone: phone,
+                            subject: subject,
+                            message: message,
+                            to_email: EMAILJS_CONFIG.ADMIN_EMAIL,
+                            reply_to: email
+                        };
 
-                // Check if backend is available
-                const healthCheck = await fetch(`${api.baseURL}/api/health`).catch(() => null);
-                
-                if (!healthCheck) {
-                    console.warn('Backend server not responding, using local storage fallback');
-                    saveMessageLocally(name, email, phone, subject, message);
-                    showNotification('✅ Message saved locally. Admin will review it soon.', 'success');
-                    contactForm.reset();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                    return;
-                }
+                        const response = await emailjs.send(
+                            EMAILJS_CONFIG.SERVICE_ID,
+                            EMAILJS_CONFIG.TEMPLATE_ID,
+                            templateParams
+                        );
 
-                // Try API if backend is available
-                if (typeof api !== 'undefined' && api.sendMessage) {
-                    const result = await api.sendMessage({
-                        name, email, phone, subject, message
-                    });
-                    
-                    if (result.success) {
-                        showNotification('✅ Thank you! Your message has been sent successfully. We will get back to you soon.', 'success');
-                        contactForm.reset();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    } else {
-                        console.error('API error:', result.message);
-                        // Fallback to local storage
-                        saveMessageLocally(name, email, phone, subject, message);
-                        showNotification('✅ Message saved. Thank you for contacting us!', 'success');
-                        contactForm.reset();
+                        console.log('✅ Email sent successfully:', response);
+                        emailSent = true;
+                    } catch (emailError) {
+                        console.error('❌ EmailJS error:', emailError);
                     }
                 } else {
-                    // No API, use local storage
-                    saveMessageLocally(name, email, phone, subject, message);
-                    showNotification('✅ Message saved. Thank you for contacting us!', 'success');
-                    contactForm.reset();
+                    console.warn('⚠️ EmailJS not configured. Set up your credentials in EMAILJS_CONFIG.');
                 }
 
-                // Restore button
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-                
+                // 2. Try saving via backend API  
+                try {
+                    const healthCheck = await fetch(`${api.baseURL}/api/health`, {
+                        signal: AbortSignal.timeout(3000)
+                    }).catch(() => null);
+                    
+                    if (healthCheck && healthCheck.ok) {
+                        if (typeof api !== 'undefined' && api.sendMessage) {
+                            const result = await api.sendMessage({
+                                name, email, phone, subject, message
+                            });
+                            
+                            if (result.success) {
+                                apiSaved = true;
+                                console.log('✅ Message saved to backend');
+                            }
+                        }
+                    }
+                } catch (apiError) {
+                    console.warn('Backend not available:', apiError.message);
+                }
+
+                // 3. Always save locally as backup
+                saveMessageLocally(name, email, phone, subject, message);
+
+                // Show success
+                if (emailSent) {
+                    showSuccessState();
+                } else if (apiSaved) {
+                    showSuccessState();
+                } else {
+                    // Saved locally only
+                    showSuccessState();
+                    console.log('Message saved locally. Configure EmailJS for email notifications.');
+                }
+
             } catch (error) {
                 console.error('Error:', error);
                 
-                // Save to local storage as fallback
-                const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const phone = document.getElementById('phone').value.trim();
-                const subject = document.getElementById('subject').value.trim();
-                const message = document.getElementById('message').value.trim();
-                
+                // Save locally as fallback
                 saveMessageLocally(name, email, phone, subject, message);
                 showNotification('✅ Message saved successfully. We will review it soon.', 'success');
                 contactForm.reset();
-                
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Send Message';
             }
+
+            // Restore button
+            submitBtn.disabled = false;
+            btnText.style.display = 'inline';
+            btnIcon.style.display = 'inline';
+            btnLoader.style.display = 'none';
         });
     }
 });
 
-// Save message locally
+// ========================
+// Success State
+// ========================
+function showSuccessState() {
+    const form = document.getElementById('contactForm');
+    const formHeader = document.querySelector('.form-header');
+    const successState = document.getElementById('successState');
+    
+    if (form && successState) {
+        form.style.display = 'none';
+        if (formHeader) formHeader.style.display = 'none';
+        successState.style.display = 'block';
+        
+        // Scroll to success state
+        const wrapper = document.getElementById('formWrapper');
+        if (wrapper) {
+            wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+}
+
+// ========================
+// Reset Form
+// ========================
+function resetForm() {
+    const form = document.getElementById('contactForm');
+    const formHeader = document.querySelector('.form-header');
+    const successState = document.getElementById('successState');
+    
+    if (form && successState) {
+        successState.style.display = 'none';
+        if (formHeader) formHeader.style.display = 'block';
+        form.style.display = 'flex';
+        form.reset();
+        
+        // Reset char count
+        const charCount = document.getElementById('charCount');
+        if (charCount) {
+            charCount.textContent = '0 / 1000';
+            charCount.classList.remove('warning', 'limit');
+        }
+    }
+}
+
+// ========================
+// Save Message Locally
+// ========================
 function saveMessageLocally(name, email, phone, subject, message) {
     const messages = JSON.parse(localStorage.getItem('contactMessages')) || [];
     
@@ -146,52 +274,30 @@ function saveMessageLocally(name, email, phone, subject, message) {
     messages.push(newMessage);
     localStorage.setItem('contactMessages', JSON.stringify(messages));
     
-    console.log('Message saved to local storage:', newMessage);
+    console.log('💾 Message saved to local storage:', newMessage);
 }
 
-// Setup fallback contact form (if API not available)
-function setupFallbackContact() {
-    const contactForm = document.getElementById('contactForm');
+// ========================
+// FAQ Toggle
+// ========================
+function toggleFAQ(button) {
+    const faqItem = button.closest('.faq-item');
+    const isActive = faqItem.classList.contains('active');
     
-    if (!contactForm) return;
-
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const subject = document.getElementById('subject').value.trim();
-        const message = document.getElementById('message').value.trim();
-        
-        // Validation
-        if (!name || !email || !phone || !subject || !message) {
-            showNotification('Please fill in all fields', 'error');
-            return;
-        }
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            showNotification('Please enter a valid email address', 'error');
-            return;
-        }
-        
-        const phoneRegex = /^[\d\s\-\+\(\)]+$/;
-        if (!phoneRegex.test(phone)) {
-            showNotification('Please enter a valid phone number', 'error');
-            return;
-        }
-
-        // Save locally
-        saveMessageLocally(name, email, phone, subject, message);
-        
-        showNotification('✅ Message saved successfully. We will review it soon.', 'success');
-        contactForm.reset();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Close all FAQ items
+    document.querySelectorAll('.faq-item.active').forEach(item => {
+        item.classList.remove('active');
     });
+    
+    // Toggle clicked item
+    if (!isActive) {
+        faqItem.classList.add('active');
+    }
 }
 
-// Show notification
+// ========================
+// Show Notification
+// ========================
 function showNotification(message, type) {
     // Remove existing notification
     const existingNotification = document.querySelector('.notification');

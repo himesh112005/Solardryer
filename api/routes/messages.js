@@ -1,5 +1,6 @@
 import express from 'express';
 import { pool } from '../config/database.js';
+import { sendContactNotification } from '../utils/email.js';
 
 const router = express.Router();
 
@@ -67,6 +68,17 @@ router.post('/', async (req, res) => {
             );
             connection.release();
 
+            // Send email notification to admin (non-blocking)
+            sendContactNotification({ name, email, phone, subject, message })
+                .then(sent => {
+                    if (sent) {
+                        console.log('📧 Admin email notification sent for message:', result.insertId);
+                    } else {
+                        console.warn('⚠️ Admin email notification failed for message:', result.insertId);
+                    }
+                })
+                .catch(err => console.error('Email notification error:', err));
+
             res.status(201).json({
                 success: true,
                 message: 'Message sent successfully',
@@ -75,6 +87,10 @@ router.post('/', async (req, res) => {
         } catch (dbError) {
             console.warn('Database error, saving to local storage:', dbError.message);
             
+            // Still try to send email even if DB fails
+            sendContactNotification({ name, email, phone, subject, message })
+                .catch(err => console.error('Email notification error:', err));
+
             // Fallback: save to array (in production, use a file or cache)
             res.status(201).json({
                 success: true,

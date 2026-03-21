@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact SolarDry Solutions - Get in touch with us for solar drying technology inquiries, partnerships, and support.">
     <title>Contact Us - SolarDry Solutions</title>
     
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="contact.css">
     
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -33,66 +41,222 @@
         </div>
     </header>
 
-    <section class="page-header contact-header">
+    <!-- Hero Header with Animated Background -->
+    <section class="contact-hero">
+        <div class="hero-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
         <div class="container">
-            <h1>Get In Touch</h1>
-            <p>Have questions? We'd love to hear from you. Contact us today.</p>
+            <div class="hero-badge">
+                <span class="badge-icon">💬</span>
+                <span>We'd Love to Hear From You</span>
+            </div>
+            <h1>Get In <span class="gradient-text">Touch</span></h1>
+            <p>Have questions about our solar drying technology? Want to partner with us? Reach out and we'll get back to you within 24 hours.</p>
         </div>
     </section>
 
-    <section class="contact-section">
+    <!-- Contact Cards Section -->
+    <section class="contact-cards-section">
         <div class="container">
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h2>Contact Information</h2>
-                    <div class="info-item">
-                        <div class="info-icon">📍</div>
-                        <div>
-                            <h3>Address</h3>
-                            <p>SSVPS's BAPUSAHEB SHIVAJIRAO DEORE COLLEGE OF ENGINEERING<br>Department of Mechanical Engineering<br>Deopur, Dhule, MS, India</p>
-                        </div>
+            <div class="contact-cards-grid">
+                <div class="contact-card" id="card-address">
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">📍</div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-icon">📞</div>
-                        <div>
-                            <h3>Phone</h3>
-                            <p><a href="tel:+919423080717">+91 94230 80717</a></p>
-                        </div>
+                    <h3>Visit Us</h3>
+                    <p>SSVPS's B. S. Deore College of Engineering<br>Dept. of Mechanical Engineering<br>Deopur, Dhule, MS, India</p>
+                </div>
+                <div class="contact-card" id="card-phone">
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">📞</div>
                     </div>
-                    <div class="info-item">
-                        <div class="info-icon">✉️</div>
+                    <h3>Call Us</h3>
+                    <p><a href="tel:+919423080717">+91 94230 80717</a></p>
+                    <span class="card-tag">Mon - Sat, 9AM - 6PM</span>
+                </div>
+                <div class="contact-card" id="card-email">
+                    <div class="card-icon-wrapper">
+                        <div class="card-icon">✉️</div>
+                    </div>
+                    <h3>Email Us</h3>
+                    <p><a href="mailto:solardryer@gmail.com">solardryer@gmail.com</a></p>
+                    <span class="card-tag">We reply within 24 hours</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Contact Form Section -->
+    <section class="contact-form-section">
+        <div class="container">
+            <div class="contact-layout">
+                <!-- Left: Map & Quick Info -->
+                <div class="contact-sidebar">
+                    <div class="sidebar-header">
+                        <h2>Let's Connect</h2>
+                        <p>Fill out the form and our team will get back to you within 24 hours. Your message will be sent directly to our team via email.</p>
+                    </div>
+                    
+                    <div class="map-wrapper">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.1234567890!2d74.7698!3d20.9012!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bddeb0000000001%3A0x1234567890abcdef!2sSSVPS%20BSD%20College%20of%20Engineering!5e0!3m2!1sen!2sin!4v1234567890"
+                            width="100%" 
+                            height="250" 
+                            style="border:0; border-radius: 16px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="SolarDry Solutions Location">
+                        </iframe>
+                    </div>
+
+                    <div class="response-guarantee">
+                        <div class="guarantee-icon">⚡</div>
                         <div>
-                            <h3>Email</h3>
-                            <p><a href="mailto:solardryer@gmail.com">solardryer@gmail.com</a></p>
+                            <strong>Quick Response Guarantee</strong>
+                            <p>We respond to all inquiries within 24 hours during business days.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="contact-form-wrapper">
-                    <h2>Send us a Message</h2>
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" name="name" placeholder="Your Full Name" required>
+                <!-- Right: Contact Form -->
+                <div class="contact-form-wrapper" id="formWrapper">
+                    <div class="form-header">
+                        <h2>Send us a Message</h2>
+                        <p>All fields marked with <span class="required-star">*</span> are required</p>
+                    </div>
+
+                    <form class="contact-form" id="contactForm" autocomplete="on">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">
+                                    <span class="label-icon">👤</span> Full Name <span class="required-star">*</span>
+                                </label>
+                                <input type="text" id="name" name="name" placeholder="Enter your full name" required autocomplete="name">
+                                <span class="field-hint">Your name helps us personalize our response</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">
+                                    <span class="label-icon">📧</span> Email Address <span class="required-star">*</span>
+                                </label>
+                                <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email">
+                                <span class="field-hint">We'll never share your email with anyone</span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">
+                                    <span class="label-icon">📱</span> Phone Number <span class="required-star">*</span>
+                                </label>
+                                <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" required autocomplete="tel">
+                                <span class="field-hint">Optional for quick follow-up calls</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">
+                                    <span class="label-icon">📋</span> Subject <span class="required-star">*</span>
+                                </label>
+                                <select id="subject" name="subject" required>
+                                    <option value="" disabled selected>Select a topic</option>
+                                    <option value="General Inquiry">General Inquiry</option>
+                                    <option value="Product Information">Product Information</option>
+                                    <option value="Partnership Opportunity">Partnership Opportunity</option>
+                                    <option value="Technical Support">Technical Support</option>
+                                    <option value="Pricing & Quotation">Pricing & Quotation</option>
+                                    <option value="Feedback">Feedback</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" required>
+                        <div class="form-group full-width">
+                            <label for="message">
+                                <span class="label-icon">💬</span> Your Message <span class="required-star">*</span>
+                            </label>
+                            <textarea id="message" name="message" placeholder="Tell us about your inquiry, project needs, or any questions you have about our solar drying solutions..." rows="5" required></textarea>
+                            <div class="textarea-footer">
+                                <span class="char-count" id="charCount">0 / 1000</span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <input type="text" id="subject" name="subject" placeholder="What is this about?" required>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit" id="submitBtn">
+                                <span class="btn-text">Send Message</span>
+                                <span class="btn-icon">→</span>
+                                <span class="btn-loader" style="display:none;">
+                                    <span class="spinner"></span>
+                                    Sending...
+                                </span>
+                            </button>
+                            <button type="reset" class="btn-reset" id="resetBtn">Clear Form</button>
                         </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" placeholder="Your message here..." rows="6" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>
+
+                    <!-- Success State (hidden by default) -->
+                    <div class="success-state" id="successState" style="display: none;">
+                        <div class="success-animation">
+                            <div class="success-checkmark">
+                                <svg viewBox="0 0 52 52">
+                                    <circle cx="26" cy="26" r="25" fill="none"/>
+                                    <path fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3>Message Sent Successfully! 🎉</h3>
+                        <p>Thank you for reaching out. Our team has received your message via email and will respond within 24 hours.</p>
+                        <button class="btn-submit" onclick="resetForm()" style="margin-top: 1.5rem;">
+                            <span class="btn-text">Send Another Message</span>
+                            <span class="btn-icon">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item" id="faq-1">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>What types of products can be dried using solar dryers?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our solar dryers can be used for a wide variety of products including fruits, vegetables, spices, grains, medicinal herbs, and even fish. The temperature and airflow can be adjusted based on the product requirements.</p>
+                    </div>
+                </div>
+                <div class="faq-item" id="faq-2">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How long does it take to install a solar dryer?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Installation typically takes 2-5 days depending on the model and location. Our team provides complete installation support and training for optimal operation.</p>
+                    </div>
+                </div>
+                <div class="faq-item" id="faq-3">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Do you provide after-sales support?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! We provide comprehensive after-sales support including maintenance guidance, technical assistance, and spare parts. Our support team is available via phone and email.</p>
+                    </div>
+                </div>
+                <div class="faq-item" id="faq-4">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Can we visit your facility for a demo?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely! We welcome visitors to our facility at SSVPS's B.S. Deore College of Engineering, Dhule. Please contact us to schedule a demonstration visit.</p>
+                    </div>
                 </div>
             </div>
         </div>

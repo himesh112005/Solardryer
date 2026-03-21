@@ -98,7 +98,7 @@ function setupAdminLogin(username, remember) {
     const userData = {
         id: 1,
         username: username,
-        email: 'admin@solardry.com',
+        email: 'sanjeev.suryawanshi269@gmail.com',
         role: 'admin',
         isMasterAdmin: true
     };

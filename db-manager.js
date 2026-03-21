@@ -26,7 +26,7 @@ class DatabaseManager {
                 {
                     id: 1,
                     username: 'admin',
-                    email: 'admin@solardry.com',
+                    email: 'sanjeev.suryawanshi269@gmail.com',
                     password: 'admin123',
                     role: 'admin',
                     status: 'active',
