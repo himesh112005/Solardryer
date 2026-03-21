@@ -70,7 +70,7 @@ class DatabaseManager {
             contactMessages: [],
             settings: {
                 siteName: 'SolarDry Solutions',
-                siteEmail: 'solardryer@gmail.com',
+                siteEmail: 'sanjeev.suryawanshi269@gmail.com',
                 sitePhone: '+91 94230 80717',
                 siteAddress: 'SSVPS\'s BAPUSAHEB SHIVAJIRAO DEORE COLLEGE OF ENGINEERING, Deopur, Dhule, MS, India'
             }

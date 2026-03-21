@@ -63,7 +63,7 @@ function displayProducts(products, container) {
                 <h3>${product.name}</h3>
                 <p>${product.description}</p>
                 <div class="price">₹${product.price.toLocaleString('en-IN')}</div>
-                <a href="mailto:solardryer@gmail.com?subject=Inquiry about ${encodeURIComponent(product.name)}" class="btn">Inquire Now</a>
+                <a href="mailto:sanjeev.suryawanshi269@gmail.com?subject=Inquiry about ${encodeURIComponent(product.name)}" class="btn">Inquire Now</a>
             </div>
         </div>
     `).join('');

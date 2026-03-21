@@ -3,7 +3,7 @@
 const CONFIG = {
     // Site Information
     SITE_NAME: 'SolarDry Solutions',
-    SITE_EMAIL: 'solardryer@gmail.com',
+    SITE_EMAIL: 'sanjeev.suryawanshi269@gmail.com',
     SITE_PHONE: '+91 94230 80717',
     SITE_ADDRESS: 'SSVPS\'s BAPUSAHEB SHIVAJIRAO DEORE COLLEGE OF ENGINEERING, Department of Mechanical Engineering Deopur, Dhule, MS, India',
     
