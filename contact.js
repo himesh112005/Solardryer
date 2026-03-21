@@ -17,10 +17,9 @@
 // ============================================================
 
 const EMAILJS_CONFIG = {
-    // ⚠️ REPLACE THESE WITH YOUR ACTUAL EmailJS CREDENTIALS
-    PUBLIC_KEY: 'YOUR_EMAILJS_PUBLIC_KEY',       // From EmailJS Account > General
-    SERVICE_ID: 'YOUR_EMAILJS_SERVICE_ID',       // From EmailJS Email Services
-    TEMPLATE_ID: 'YOUR_EMAILJS_TEMPLATE_ID',     // From EmailJS Email Templates
+    PUBLIC_KEY: 'tNk4u1BT5yJHDQWTR',              // ✅ DONE!
+    SERVICE_ID: 'service_yhldxm1',               // ✅ DONE!
+    TEMPLATE_ID: 'template_yd5g6ts',             // ✅ DONE!
     
     // Admin email where notifications will be sent
     ADMIN_EMAIL: 'sanjeev.suryawanshi269@gmail.com'
@@ -132,11 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
                     try {
                         const templateParams = {
-                            from_name: name,
-                            from_email: email,
+                            // These match your EmailJS template variables
+                            name: name,
+                            email: email,
                             phone: phone,
                             subject: subject,
                             message: message,
+                            from_name: name,
+                            from_email: email,
                             to_email: EMAILJS_CONFIG.ADMIN_EMAIL,
                             reply_to: email
                         };
