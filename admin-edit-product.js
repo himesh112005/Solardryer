@@ -43,7 +43,12 @@ function loadProduct(id) {
     document.getElementById('modelId').value = product.model_id;
     document.getElementById('price').value = product.price;
     document.getElementById('description').value = product.description;
-    document.getElementById('image').value = product.image || '';
+    
+    const imagePreview = document.getElementById('image-preview');
+    if (imagePreview && product.image) {
+        imagePreview.innerHTML = `<img src="${product.image}" alt="Current" style="max-width: 200px; border-radius: 8px; margin-top: 10px;">`;
+    }
+    
     document.getElementById('status').value = product.status;
 }
 
@@ -53,6 +58,35 @@ function setupProductForm() {
     if (!form) {
         console.error('Form not found');
         return;
+    }
+
+    // Handle image preview
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('image-preview');
+    let imageDataUrl = '';
+
+    if (imageInput) {
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imageDataUrl = e.target.result;
+                    imagePreview.innerHTML = `<img src="${imageDataUrl}" alt="Preview" style="max-width: 200px; border-radius: 8px; margin-top: 10px;">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // If they cleared the file, show the original image if available
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                const product = products.find(p => p.id === currentProductId);
+                if (product && product.image) {
+                    imagePreview.innerHTML = `<img src="${product.image}" alt="Current" style="max-width: 200px; border-radius: 8px; margin-top: 10px;">`;
+                } else {
+                    imagePreview.innerHTML = '<span>No image selected</span>';
+                }
+                imageDataUrl = '';
+            }
+        });
     }
 
     form.addEventListener('submit', function(e) {
@@ -67,7 +101,6 @@ function setupProductForm() {
         const modelId = document.getElementById('modelId').value.trim();
         const price = parseFloat(document.getElementById('price').value);
         const description = document.getElementById('description').value.trim();
-        const image = document.getElementById('image').value.trim();
         const status = document.getElementById('status').value.trim();
         
         // Validation
@@ -82,9 +115,21 @@ function setupProductForm() {
         }
 
         try {
+            // Get original product to preserve image if not changed
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const originalProduct = products.find(p => p.id === currentProductId);
+            
+            // Use new image if selected, otherwise keep old one
+            const finalImage = imageDataUrl || (originalProduct ? originalProduct.image : '');
+
             // Update product
             updateProduct(currentProductId, {
-                name, model_id: modelId, price, description, image, status
+                name, 
+                model_id: modelId, 
+                price, 
+                description, 
+                image: finalImage, 
+                status
             });
             
             alert('✅ Product updated successfully!');

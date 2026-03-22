@@ -663,3 +663,34 @@ body {
         width: 100%;
     }
 }
+
+/* Image Upload Styles */
+.image-upload-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-image-preview {
+    width: 100%;
+    min-height: 100px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.admin-image-preview img {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+}
+
+.admin-image-preview span {
+    color: #888;
+    font-size: 0.9rem;
+}
