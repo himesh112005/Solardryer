@@ -19,7 +19,7 @@
 const EMAILJS_CONFIG = {
     PUBLIC_KEY: 'tNk4u1BT5yJHDQWTR',              // ✅ DONE!
     SERVICE_ID: 'service_yhldxm1',               // ✅ DONE!
-    TEMPLATE_ID: 'template_yd5g6ts',             // ✅ DONE!
+    TEMPLATE_ID: 'template_t900c8m',             // ✅ FIXED!
     
     // Admin email where notifications will be sent
     ADMIN_EMAIL: 'sanjeev.suryawanshi269@gmail.com'
