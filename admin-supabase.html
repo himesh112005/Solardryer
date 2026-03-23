@@ -3,32 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - SolarDry Solutions</title>
+    <title>Admin Dashboard - SolarDry Solutions</title>
     
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="admin.css">
     
     <!-- Supabase JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        .admin-main { padding: 4rem 0; background: #f9f9f9; min-height: 100vh; }
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .tab-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid #ddd; padding-bottom: 1rem; }
-        .tab-btn { padding: 0.75rem 1.5rem; cursor: pointer; border: none; background: none; font-weight: 600; color: #666; transition: all 0.3s; }
-        .tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); }
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        .data-table th, .data-table td { text-align: left; padding: 1rem; border-bottom: 1px solid #eee; }
-        .data-table th { background: #f4f4f4; color: #333; }
-        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        :root { --admin-bg: #f5f7fa; }
+        body { background: var(--admin-bg); min-height: 100vh; font-family: 'Outfit', sans-serif; }
+        
+        /* Login Form Styles */
+        .login-container { display: flex; align-items: center; justify-content: center; min-height: 80vh; padding: 20px; }
+        .login-card { background: white; padding: 2.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); width: 100%; max-width: 400px; text-align: center; border-top: 5px solid var(--primary-color); }
+        .login-card h2 { margin-bottom: 0.5rem; color: var(--dark-color); }
+        .login-card p { color: #666; margin-bottom: 2rem; font-size: 0.9rem; }
+        .form-group { margin-bottom: 1.25rem; text-align: left; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; }
+        .form-group input { width: 100%; padding: 0.75rem 1rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; }
+        .form-group input:focus { outline: none; border-color: var(--primary-color); }
+        .btn-login { width: 100%; padding: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 1rem; }
+        
+        /* Dashboard Layout */
+        #admin-content { display: none; padding: 3rem 0; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; border-bottom: 1px solid #ddd; padding-bottom: 1.5rem; }
+        .dashboard-header h1 { margin: 0; font-size: 2.2rem; }
+        
+        .tab-btn { padding: 10px 20px; cursor: pointer; border: none; background: none; font-weight: 600; margin-right: 1.5rem; color: #888; border-bottom: 3px solid transparent; transition: all 0.3s; }
+        .tab-btn.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+        
+        .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); margin-bottom: 2rem; border-left: 4px solid var(--primary-color); }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: #fff; overflow: hidden; border-radius: 8px; }
+        .data-table th, .data-table td { padding: 1.25rem; text-align: left; border-bottom: 1px solid #f0f0f0; }
+        .data-table th { background: #fdfdfd; font-weight: 600; color: #444; }
+        .status-badge { padding: 5px 12px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
         .status-unread { background: #fee2e2; color: #dc2626; }
-        .status-read { background: #d1fae5; color: #059669; }
-        .btn-add { margin-bottom: 1rem; }
+        .status-read { background: #dcfce7; color: #166534; }
+        
+        .btn-small { padding: 6px 14px; font-size: 0.85rem; border-radius: 6px; }
+        .btn-delete { background: #ef4444; color: white; border: none; cursor: pointer; }
+        .btn-delete:hover { background: #b91c1c; }
+
+        /* Modal Overlay */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-content { background: white; width: 90%; max-width: 550px; padding: 2rem; border-radius: 16px; position: relative; }
+        .close-modal { position: absolute; top: 1rem; right: 1rem; cursor: pointer; font-size: 1.5rem; color: #888; }
+        
+        /* Mobile adjustment */
+        @media (max-width: 768px) {
+            .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .data-table th:nth-child(2), .data-table td:nth-child(2) { display: none; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Unified Navbar -->
     <header class="navbar">
         <div class="container">
             <div class="nav-left">
@@ -44,91 +75,119 @@
 
             <nav>
                 <ul class="nav-links">
-                    <li><a href="index.html">View Site</a></li>
-                    <li><a href="admin-supabase.html" class="active">Dashboard</a></li>
-                    <li><a href="#" id="btnLogout">Logout</a></li>
+                    <li><a href="index.html">Main Website</a></li>
+                    <li><a href="#" id="auth-link-status">Checking Auth...</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main class="admin-main">
-        <div class="container">
-            <h1>Supabase Dashboard</h1>
-            <p>Welcome to your project command center.</p>
-
-            <div class="tab-nav">
-                <button class="tab-btn active" onclick="switchTab('products')">Products</button>
-                <button class="tab-btn" onclick="switchTab('messages')">Messages</button>
-            </div>
-
-            <!-- Products Section -->
-            <section id="products-tab" class="dashboard-tab">
-                <div class="flex-between">
-                    <h2>Manage Products</h2>
-                    <button class="btn btn-add" onclick="showAddProductModal()">+ Add New Dryer</button>
+    <!-- 1. LOGIN SCREEN -->
+    <div id="login-section" class="login-container">
+        <div class="login-card">
+            <h2>Admin Login</h2>
+            <p>Enter your cloud credentials.</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="admin@example.com" required>
                 </div>
-                <div class="card">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Model ID</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productTableBody">
-                            <tr><td colspan="5">Loading products...</td></tr>
-                        </tbody>
-                    </table>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
                 </div>
-            </section>
-
-            <!-- Messages Section -->
-            <section id="messages-tab" class="dashboard-tab" style="display:none;">
-                <h2>Contact Inquiries</h2>
-                <div class="card">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Subject</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="messageTableBody">
-                            <tr><td colspan="5">Loading messages...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                <button type="submit" class="btn btn-login" id="loginBtn">Sign Into Dashboard</button>
+            </form>
+            <p id="login-error" style="color: red; margin-top: 1rem; display: none;"></p>
         </div>
-    </main>
+    </div>
 
-    <!-- Simple Add Product Modal (Inlined for simplicity) -->
-    <div id="productModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; display:none; align-items:center; justify-content:center;">
-        <div class="card" style="max-width:500px; width:90%;">
-            <h2 id="modalTitle">Add Product</h2>
+    <!-- 2. DASHBOARD CONTENT -->
+    <div id="admin-content" class="container">
+        <div class="dashboard-header">
+            <div>
+                <h1>Project Portal</h1>
+                <p>Welcome back, <span id="user-email-display" style="font-weight: 600;">Admin</span></p>
+            </div>
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="switchTab('products')">Inventory</button>
+                <button class="tab-btn" onclick="switchTab('messages')">Messages</button>
+                <button class="btn btn-small" id="btnLogout" style="background: #264653;">Logout</button>
+            </div>
+        </div>
+
+        <!-- Products Management -->
+        <section id="products-tab" class="dashboard-tab">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; align-items: center;">
+                <h2>Solar Dryers</h2>
+                <button class="btn" onclick="openModal()">+ Add New Unit</button>
+            </div>
+            <div class="card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Model ID</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <tr><td colspan="5">Loading data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Messages Section -->
+        <section id="messages-tab" class="dashboard-tab" style="display:none;">
+            <h2>Customer Inquiries</h2>
+            <div class="card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody id="messageTableBody">
+                        <tr><td colspan="4">Loading inquiries...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal for Adding Product -->
+    <div id="productModal" class="modal">
+        <div class="modal-content card">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Create New Dryer</h2>
             <form id="productForm">
                 <div class="form-group">
                     <label>Product Name</label>
-                    <input type="text" id="pName" required>
+                    <input type="text" id="pName" placeholder="e.g. Small Farm Unit S-100" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Model ID</label>
+                        <input type="text" id="pModel" placeholder="S-100" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Retail Price (₹)</label>
+                        <input type="number" id="pPrice" placeholder="25000" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Model ID</label>
-                    <input type="text" id="pModel" required>
+                    <label>Description (Optional)</label>
+                    <input type="text" id="pDesc" placeholder="Brief description of efficiency...">
                 </div>
-                <div class="form-group">
-                    <label>Price (₹)</label>
-                    <input type="number" id="pPrice" required>
-                </div>
-                <div class="form-actions" style="margin-top:2rem;">
-                    <button type="submit" class="btn">Save Product</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <div class="form-actions" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn">Register Product</button>
+                    <button type="button" class="btn" style="background: #aaa;" onclick="closeModal()">Cancel</button>
                 </div>
             </form>
         </div>
@@ -141,10 +200,63 @@
     <script>
         const api = new APIClient();
         
-        document.addEventListener('DOMContentLoaded', () => {
-            loadAllData();
+        // --- AUTH LOGIC ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check session
+            if (api.supabase) {
+                const { data } = await api.supabase.auth.getSession();
+                if (data.session) {
+                    showDashboard(data.session.user);
+                } else {
+                    showLogin();
+                }
+            } else {
+                alert("Supabase API key not found in config.js");
+            }
         });
 
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('login-error');
+            
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.innerText = "Signing in...";
+            loginBtn.disabled = true;
+
+            const { data, error } = await api.supabase.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                errorEl.innerText = error.message;
+                errorEl.style.display = 'block';
+                loginBtn.innerText = "Sign Into Dashboard";
+                loginBtn.disabled = false;
+            } else {
+                showDashboard(data.user);
+            }
+        });
+
+        document.getElementById('btnLogout').addEventListener('click', async () => {
+            await api.supabase.auth.signOut();
+            location.reload();
+        });
+
+        function showDashboard(user) {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('admin-content').style.display = 'block';
+            document.getElementById('user-email-display').innerText = user.email;
+            document.getElementById('auth-link-status').innerText = 'Dashboard (Online)';
+            loadAllData();
+        }
+
+        function showLogin() {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('admin-content').style.display = 'none';
+            document.getElementById('auth-link-status').innerText = 'Admin Login';
+        }
+
+        // --- DATA LOGIC ---
         async function loadAllData() {
             await Promise.all([loadProducts(), loadMessages()]);
         }
@@ -157,16 +269,16 @@
                 table.innerHTML = result.data.map(p => `
                     <tr>
                         <td><strong>${p.name}</strong></td>
-                        <td>${p.model_id || p.modelId}</td>
-                        <td>₹${p.price?.toLocaleString()}</td>
+                        <td><code style="background: #eee; padding: 2px 5px; border-radius: 4px;">${p.model_id || p.modelId}</code></td>
+                        <td>₹${parseFloat(p.price).toLocaleString()}</td>
                         <td><span class="status-badge status-read">${p.status || 'Active'}</span></td>
                         <td>
-                            <button class="btn btn-small" onclick="deleteProduct('${p.id}')">Delete</button>
+                            <button class="btn-delete btn-small" onclick="deleteProduct('${p.id}')">Delete</button>
                         </td>
                     </tr>
                 `).join('');
             } else {
-                table.innerHTML = '<tr><td colspan="5">No products found.</td></tr>';
+                table.innerHTML = '<tr><td colspan="5">No products found in database.</td></tr>';
             }
         }
 
@@ -179,18 +291,17 @@
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (!error && data.length > 0) {
+            if (!error && data && data.length > 0) {
                 table.innerHTML = data.map(m => `
                     <tr>
-                        <td>${new Date(m.created_at).toLocaleDateString()}</td>
-                        <td>${m.name}</td>
+                        <td><small>${new Date(m.created_at).toLocaleDateString()}</small></td>
+                        <td><strong>${m.name}</strong><br><small>${m.email}</small></td>
                         <td>${m.subject}</td>
-                        <td><span class="status-badge ${m.status === 'unread' ? 'status-unread' : 'status-read'}">${m.status}</span></td>
-                        <td><button class="btn btn-small" onclick="alert('${m.message.replace(/'/g, "\\'")}')">View</button></td>
+                        <td style="max-width: 300px; font-size: 0.9rem;">${m.message}</td>
                     </tr>
                 `).join('');
             } else {
-                table.innerHTML = '<tr><td colspan="5">No messages found.</td></tr>';
+                table.innerHTML = '<tr><td colspan="4">No messages received yet.</td></tr>';
             }
         }
 
@@ -201,40 +312,41 @@
             event.target.classList.add('active');
         }
 
-        // Add Product logic using Supabase directly
-        async function showAddProductModal() {
-            document.getElementById('productModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('productModal').style.display = 'none';
-        }
+        // --- CRUD MODAL LOGIC ---
+        function openModal() { document.getElementById('productModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('productModal').style.display = 'none'; }
 
         document.getElementById('productForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!api.supabase) return alert('Supabase not configured!');
-            
             const product = {
                 name: document.getElementById('pName').value,
                 model_id: document.getElementById('pModel').value,
                 price: parseFloat(document.getElementById('pPrice').value),
+                description: document.getElementById('pDesc').value,
                 status: 'active'
             };
 
             const { error } = await api.supabase.from('products').insert([product]);
-            
             if (error) {
-                alert('Error: ' + error.message);
+                alert('Save Failed: ' + error.message);
             } else {
                 closeModal();
                 loadProducts();
+                document.getElementById('productForm').reset();
             }
         });
 
         async function deleteProduct(id) {
-            if (!confirm('Delete this product?')) return;
+            if (!confirm('Are you absolutely sure? This will remove the dryer from the public catalog.')) return;
             const { error } = await api.supabase.from('products').delete().match({ id: id });
-            if (!error) loadProducts();
+            if (error) alert(error.message);
+            else loadProducts();
+        }
+        
+        // Simple click outside to close modal
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target == modal) closeModal();
         }
     </script>
 </body>
