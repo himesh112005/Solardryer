@@ -7,6 +7,10 @@ const CONFIG = {
     SITE_PHONE: '+91 94230 80717',
     SITE_ADDRESS: 'SSVPS\'s BAPUSAHEB SHIVAJIRAO DEORE COLLEGE OF ENGINEERING, Department of Mechanical Engineering Deopur, Dhule, MS, India',
     
+    // Supabase Configuration
+    SUPABASE_URL: 'https://vusivxfahzharjzbwfrm.supabase.co',
+    SUPABASE_ANON_KEY: 'sb_publishable_ILKLGJz4cG4GG2BocVIDag_bwSSLAhC',
+
     // URLs
     SITE_URL: typeof window !== 'undefined' ? window.location.origin : 'http://localhost',
     API_BASE_URL: typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5000',

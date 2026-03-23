@@ -75,90 +75,9 @@ a {
     background: #f4a261; /* Orange */
 }
 
-/* === Header / Navbar === */
-.navbar {
-    background: var(--white);
-    padding: 1.5rem 0;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
+/* Navbar styles are handled by navbar.css */
+/* Menu Toggle Button (for mobile) handled by navbar.css */
 
-.navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-left, .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Added gap for logo/text */
-}
-
-/* Default logo size */
-.header-logo {
-    width: 60px; 
-    height: auto;
-    object-fit: contain;
-}
-
-/* 🚀 MODIFICATION: Dassault Logo (Left Logo) Increased Size to 150px for maximum prominence */
-.left-logo {
-    width: 150px; /* **Significantly Increased size for main investor logo** */
-    height: auto;
-}
-/* ============================================================= */
-
-/* Right logo size */
-.nav-right .header-logo {
-    width: 60px;
-}
-
-.logo {
-    text-decoration: none;
-    color: inherit;
-}
-
-.navbar .logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--dark-color);
-    white-space: nowrap;
-}
-
-.navbar .nav-links {
-    list-style: none;
-    display: flex;
-}
-
-.navbar .nav-links li {
-    margin-left: 2rem;
-}
-
-.navbar .nav-links a {
-    color: var(--text-color);
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.navbar .nav-links a:hover,
-.navbar .nav-links a.active {
-    color: var(--primary-color);
-}
-
-/* Menu Toggle Button (for mobile) */
-.menu-toggle {
-    display: none; /* Hidden by default on desktop */
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: var(--dark-color);
-    padding: 5px;
-}
 
 /* === Hero Section === */
 .hero {
@@ -577,53 +496,8 @@ a {
     opacity: 0.9;
 }
 
-/* === Responsive Design (Fixing Navbar and Footer) */
-@media (max-width: 900px) {
-    /* Adjust main navigation for tablets/smaller screens */
-    .navbar .nav-links {
-        display: none; /* Hide desktop menu */
-        flex-direction: column;
-        width: 100%;
-        text-align: center;
-        background: var(--white);
-        position: absolute;
-        top: 100%; /* Position right below the header */
-        left: 0;
-        padding: 1rem 0;
-        border-top: 1px solid #eee;
-    }
-
-    .navbar .nav-links.open {
-        display: flex; /* Show mobile menu when active/open */
-    }
-
-    .navbar .nav-links li {
-        margin: 0.5rem 0;
-    }
-
-    .menu-toggle {
-        display: block; /* Show menu toggle button */
-    }
-
-    .navbar .container {
-        flex-wrap: wrap;
-    }
-    
-    .nav-left, .nav-right {
-        /* Keep logos on the sides */
-    }
-    
-    .nav-left {
-        flex-grow: 1;
-        justify-content: flex-start;
-    }
-    
-    .nav-right {
-        /* Pushing right logo closer to the right edge */
-        flex-grow: 0;
-        margin-left: auto;
-    }
-}
+/* === Responsive Design (Footer and General) === */
+/* Note: Navbar responsive styles are handled in navbar.css */
 
 
 @media (max-width: 768px) {
@@ -650,21 +524,6 @@ a {
     .hero {
         padding: 5rem 0;
         min-height: 60vh;
-    }
-
-    /* Navbar */
-    .navbar .logo {
-        font-size: 1.5rem;
-    }
-    
-    /* 🚀 MODIFICATION: Left Logo still bigger on mobile */
-    .left-logo {
-        width: 100px; /* Increased mobile size for prominence */
-    }
-    /* ======================================================= */
-    
-    .nav-right .header-logo {
-        width: 40px; /* Smaller logos on mobile */
     }
 
     /* Footer responsiveness */

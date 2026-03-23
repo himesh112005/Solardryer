@@ -75,65 +75,7 @@ a {
     background: #f4a261; /* Orange */
 }
 
-/* === Header / Navbar === */
-.navbar {
-    background: var(--white);
-    padding: 1.5rem 0;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar .logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--dark-color);
-}
-
-.navbar .nav-links {
-    list-style: none;
-    display: flex;
-}
-
-.navbar .nav-links li {
-    margin-left: 2rem;
-}
-
-.navbar .nav-links a {
-    color: var(--text-color);
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.navbar .nav-links a:hover,
-.navbar .nav-links a.active {
-    color: var(--primary-color);
-}
-
-/* New: Mobile Menu Toggle */
-.menu-toggle {
-    display: none; 
-    background: none;
-    border: none;
-    font-size: 2.5rem; /* Larger icon for better touch target */
-    line-height: 1;
-    cursor: pointer;
-    color: var(--dark-color);
-    padding: 5px;
-    transition: transform 0.3s ease;
-}
-
-.menu-toggle:focus {
-    outline: 2px solid var(--primary-color);
-}
+/* Navbar styles are handled by navbar.css */
 
 
 /* === Page Header === */
@@ -278,48 +220,6 @@ a {
         padding: 3rem 0;
     }
     
-    /* Navbar changes */
-    .navbar .container {
-        padding: 0 15px;
-    }
-
-    .navbar .nav-links {
-        display: none; /* Hide default horizontal menu */
-        flex-direction: column;
-        position: absolute;
-        top: 80px; /* Below the navbar */
-        left: 0;
-        width: 100%;
-        background: var(--white);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 1rem 0;
-        transition: all 0.3s ease-out;
-    }
-    
-    .navbar .nav-links.open {
-        display: flex; /* Show menu when open */
-    }
-
-    .navbar .nav-links li {
-        margin: 0;
-    }
-
-    .navbar .nav-links a {
-        display: block;
-        padding: 15px 20px;
-        border-bottom: 1px solid var(--light-color);
-        width: 100%;
-        text-align: left;
-    }
-    
-    .navbar .nav-links li:last-child a {
-        border-bottom: none;
-    }
-
-    .menu-toggle {
-        display: block; /* Show hamburger button */
-    }
-    
     /* Product Grid changes */
     .product-grid-full {
         grid-template-columns: 1fr; /* Single column on mobile */
@@ -341,4 +241,4 @@ a {
     .footer-links li {
         margin-left: 0;
     }
-}
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SolarDry Solutions</title>
+    
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .admin-main { padding: 4rem 0; background: #f9f9f9; min-height: 100vh; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .tab-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid #ddd; padding-bottom: 1rem; }
+        .tab-btn { padding: 0.75rem 1.5rem; cursor: pointer; border: none; background: none; font-weight: 600; color: #666; transition: all 0.3s; }
+        .tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .data-table th, .data-table td { text-align: left; padding: 1rem; border-bottom: 1px solid #eee; }
+        .data-table th { background: #f4f4f4; color: #333; }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .status-unread { background: #fee2e2; color: #dc2626; }
+        .status-read { background: #d1fae5; color: #059669; }
+        .btn-add { margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <div class="nav-left">
+                <img src="image.png" alt="Logo" class="header-logo left-logo">
+                <a href="index.html" class="logo">SolarDry Admin</a>
+            </div>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">View Site</a></li>
+                    <li><a href="admin-supabase.html" class="active">Dashboard</a></li>
+                    <li><a href="#" id="btnLogout">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="container">
+            <h1>Supabase Dashboard</h1>
+            <p>Welcome to your project command center.</p>
+
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="switchTab('products')">Products</button>
+                <button class="tab-btn" onclick="switchTab('messages')">Messages</button>
+            </div>
+
+            <!-- Products Section -->
+            <section id="products-tab" class="dashboard-tab">
+                <div class="flex-between">
+                    <h2>Manage Products</h2>
+                    <button class="btn btn-add" onclick="showAddProductModal()">+ Add New Dryer</button>
+                </div>
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Model ID</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                            <tr><td colspan="5">Loading products...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Messages Section -->
+            <section id="messages-tab" class="dashboard-tab" style="display:none;">
+                <h2>Contact Inquiries</h2>
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Subject</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messageTableBody">
+                            <tr><td colspan="5">Loading messages...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Simple Add Product Modal (Inlined for simplicity) -->
+    <div id="productModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; display:none; align-items:center; justify-content:center;">
+        <div class="card" style="max-width:500px; width:90%;">
+            <h2 id="modalTitle">Add Product</h2>
+            <form id="productForm">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="pName" required>
+                </div>
+                <div class="form-group">
+                    <label>Model ID</label>
+                    <input type="text" id="pModel" required>
+                </div>
+                <div class="form-group">
+                    <label>Price (₹)</label>
+                    <input type="number" id="pPrice" required>
+                </div>
+                <div class="form-actions" style="margin-top:2rem;">
+                    <button type="submit" class="btn">Save Product</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="public/js/api-client.js"></script>
+    <script src="mobile-nav.js"></script>
+    
+    <script>
+        const api = new APIClient();
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllData();
+        });
+
+        async function loadAllData() {
+            await Promise.all([loadProducts(), loadMessages()]);
+        }
+
+        async function loadProducts() {
+            const table = document.getElementById('productTableBody');
+            const result = await api.getProducts();
+            
+            if (result.success && result.data.length > 0) {
+                table.innerHTML = result.data.map(p => `
+                    <tr>
+                        <td><strong>${p.name}</strong></td>
+                        <td>${p.model_id || p.modelId}</td>
+                        <td>₹${p.price?.toLocaleString()}</td>
+                        <td><span class="status-badge status-read">${p.status || 'Active'}</span></td>
+                        <td>
+                            <button class="btn btn-small" onclick="deleteProduct('${p.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                table.innerHTML = '<tr><td colspan="5">No products found.</td></tr>';
+            }
+        }
+
+        async function loadMessages() {
+            if (!api.supabase) return;
+            const table = document.getElementById('messageTableBody');
+            
+            const { data, error } = await api.supabase
+                .from('messages')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (!error && data.length > 0) {
+                table.innerHTML = data.map(m => `
+                    <tr>
+                        <td>${new Date(m.created_at).toLocaleDateString()}</td>
+                        <td>${m.name}</td>
+                        <td>${m.subject}</td>
+                        <td><span class="status-badge ${m.status === 'unread' ? 'status-unread' : 'status-read'}">${m.status}</span></td>
+                        <td><button class="btn btn-small" onclick="alert('${m.message.replace(/'/g, "\\'")}')">View</button></td>
+                    </tr>
+                `).join('');
+            } else {
+                table.innerHTML = '<tr><td colspan="5">No messages found.</td></tr>';
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.dashboard-tab').forEach(t => t.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tab + '-tab').style.display = 'block';
+            event.target.classList.add('active');
+        }
+
+        // Add Product logic using Supabase directly
+        async function showAddProductModal() {
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!api.supabase) return alert('Supabase not configured!');
+            
+            const product = {
+                name: document.getElementById('pName').value,
+                model_id: document.getElementById('pModel').value,
+                price: parseFloat(document.getElementById('pPrice').value),
+                status: 'active'
+            };
+
+            const { error } = await api.supabase.from('products').insert([product]);
+            
+            if (error) {
+                alert('Error: ' + error.message);
+            } else {
+                closeModal();
+                loadProducts();
+            }
+        });
+
+        async function deleteProduct(id) {
+            if (!confirm('Delete this product?')) return;
+            const { error } = await api.supabase.from('products').delete().match({ id: id });
+            if (!error) loadProducts();
+        }
+    </script>
+</body>
+</html>
