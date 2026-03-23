@@ -198,6 +198,19 @@ class APIClient {
         }
     }
 
+    // Subscribe to real-time updates for products
+    subscribeToProducts(callback) {
+        if (!this.supabase) return null;
+        
+        return this.supabase
+            .channel('public:products')
+            .on('postgres_changes', { event: '*', table: 'products' }, (payload) => {
+                console.log('Real-time update received:', payload);
+                callback(payload);
+            })
+            .subscribe();
+    }
+
     // Get all messages
     async getMessages() {
         try {

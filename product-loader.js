@@ -1,12 +1,21 @@
-// Product Loader Script
+// Product Loader Script with Supabase Real-time Support
+const api = new APIClient();
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Products page loading...');
     loadProducts();
+    
+    // Subscribe to Real-time updates
+    if (api.supabase) {
+        api.subscribeToProducts((payload) => {
+            console.log('Product change detected, reloading grid...');
+            loadProducts();
+        });
+    }
 });
 
 // Load products
-function loadProducts() {
+async function loadProducts() {
     const productGrid = document.getElementById('productGrid');
     
     if (!productGrid) {
@@ -14,24 +23,18 @@ function loadProducts() {
         return;
     }
 
+    productGrid.innerHTML = '<div class="text-center" style="padding: 2rem; grid-column: 1/-1;">Loading products...</div>';
+
     try {
-        // Get products from localStorage
-        let products = JSON.parse(localStorage.getItem('products'));
+        // Fetch from API (Supabase prioritized inside APIClient)
+        const result = await api.getProducts();
         
-        // Check if products were ever initialized
-        const initialized = localStorage.getItem('productsInitialized');
-        
-        // If products is null and not initialized, load default products once
-        if (products === null && !initialized) {
+        let products = [];
+        if (result.success && result.data.length > 0) {
+            products = result.data;
+        } else {
+            // Fallback to local defaults if no DB data
             products = getDefaultProducts();
-            localStorage.setItem('products', JSON.stringify(products));
-            localStorage.setItem('productsInitialized', 'true');
-            console.log('Products initialized with defaults');
-        } else if (products === null) {
-            // If products is null but was initialized, it means user deleted all
-            products = [];
-            localStorage.setItem('products', JSON.stringify(products));
-            console.log('Products initialized as empty');
         }
         
         // Filter active products
@@ -55,52 +58,42 @@ function loadProducts() {
 function displayProducts(products, container) {
     container.innerHTML = products.map(product => `
         <div class="product-card">
-            <img src="${product.image || 'https://placehold.co/300x200/2a9d8f/ffffff?text=' + encodeURIComponent(product.name)}" 
+            <img src="${product.image_url || product.image || 'https://placehold.co/300x200/2a9d8f/ffffff?text=' + encodeURIComponent(product.name)}" 
                  alt="${product.name}"
                  onerror="this.src='https://placehold.co/300x200/2a9d8f/ffffff?text=Product'">
             <div class="product-card-content">
-                <span class="product-type">Model ID: ${product.model_id}</span>
+                <span class="product-type">Model ID: ${product.model_id || product.modelId}</span>
                 <h3>${product.name}</h3>
-                <p>${product.description}</p>
-                <div class="price">₹${product.price.toLocaleString('en-IN')}</div>
-                <a href="mailto:sanjeev.suryawanshi269@gmail.com?subject=Inquiry about ${encodeURIComponent(product.name)}" class="btn">Inquire Now</a>
+                <p>${product.description || 'Quality solar dryer for farming needs.'}</p>
+                <div class="price">₹${parseFloat(product.price).toLocaleString('en-IN')}</div>
+                <div class="actions" style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                     <a href="mailto:sanjeev.suryawanshi269@gmail.com?subject=Inquiry about ${encodeURIComponent(product.name)}" class="btn">Inquire Now</a>
+                </div>
             </div>
         </div>
     `).join('');
 }
 
-// Get default products (only called on first load)
+// Get default products (only called if no data in DB)
 function getDefaultProducts() {
     return [
         {
-            id: 1,
+            id: '1',
             name: 'Small Farm Unit',
             model_id: 'S-100',
             price: 25000,
             description: 'Perfect for individual farmers, this compact unit offers high efficiency for small batches of produce.',
             image: 'https://placehold.co/300x200/2a9d8f/ffffff?text=Small+Farm+Dryer',
-            status: 'active',
-            createdDate: '2025-01-01'
+            status: 'active'
         },
         {
-            id: 2,
+            id: '2',
             name: 'Commercial Processor',
             model_id: 'C-500',
             price: 150000,
             description: 'A medium-scale solution designed for co-ops and small businesses requiring larger capacity and faster drying times.',
             image: 'https://placehold.co/300x200/e9c46a/264653?text=Commercial+Dryer',
-            status: 'active',
-            createdDate: '2025-01-02'
-        },
-        {
-            id: 3,
-            name: 'Industrial High-Flow System',
-            model_id: 'I-2000',
-            price: 500000,
-            description: 'The top-tier solution for large-volume industrial applications, featuring automated controls and continuous flow.',
-            image: 'https://placehold.co/300x200/f4a261/ffffff?text=Industrial+System',
-            status: 'active',
-            createdDate: '2025-01-03'
+            status: 'active'
         }
     ];
 }
