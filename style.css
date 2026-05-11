@@ -554,6 +554,138 @@ a {
     font-style: italic;
 }
 
+/* === Mass Change Section === */
+.guide-mass-section {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.mass-header,
+.time-compare-header {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.mass-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.mass-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mass-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #888;
+    width: 40px;
+    flex-shrink: 0;
+}
+
+.mass-bar-track {
+    flex: 1;
+    height: 10px;
+    background: #e9ecef;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.mass-bar {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.8s ease;
+}
+
+.mass-bar.initial {
+    background: #adb5bd;
+}
+
+.mass-bar.final {
+    /* color set via inline style from card-accent */
+}
+
+.mass-val {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.mass-reduction {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--card-accent, #2a9d8f);
+    margin-top: 0.4rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(42,157,143,0.08);
+    border-radius: 4px;
+}
+
+/* === Time Comparison Section === */
+.guide-time-compare {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.time-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 0.3rem;
+}
+
+.time-row:last-child {
+    margin-bottom: 0;
+}
+
+.time-row.traditional {
+    background: rgba(220,53,69,0.06);
+}
+
+.time-row.solar {
+    background: rgba(42,157,143,0.08);
+}
+
+.time-method {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.time-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.15rem 0.6rem;
+    border-radius: 4px;
+}
+
+.time-value.bad {
+    color: #c0392b;
+    background: rgba(220,53,69,0.1);
+}
+
+.time-value.good {
+    color: #1e8449;
+    background: rgba(42,157,143,0.12);
+}
+
 /* === Scroll Animations === */
 .animate-on-scroll {
     opacity: 0;

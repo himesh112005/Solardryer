@@ -22,19 +22,28 @@ function loadGuideItems() {
         return;
     }
 
-    tbody.innerHTML = items.map(item => `
+    tbody.innerHTML = items.map(item => {
+        const massInfo = item.initialMass && item.finalMass 
+            ? `${item.initialMass}g → ${item.finalMass}g` 
+            : '—';
+        const timeInfo = item.traditionalTime 
+            ? `☀️ ${item.traditionalTime} → 🔆 ${item.dryingTime}` 
+            : item.dryingTime;
+
+        return `
         <tr>
             <td><strong>${item.name}</strong></td>
             <td><span class="status active">${item.category}</span></td>
             <td>${item.temperature}</td>
-            <td>${item.humidity}</td>
-            <td>${item.dryingTime}</td>
+            <td>${massInfo}</td>
+            <td>${timeInfo}</td>
             <td>
                 <button onclick="editItem(${item.id})" class="btn-small">Edit</button>
                 <button onclick="deleteItem(${item.id})" class="btn-small delete">Delete</button>
             </td>
         </tr>
-    `).join('');
+    `;
+    }).join('');
 }
 
 // Setup form
@@ -52,6 +61,9 @@ function setupForm() {
             temperature: document.getElementById('itemTemp').value.trim(),
             humidity: document.getElementById('itemHumidity').value.trim(),
             dryingTime: document.getElementById('itemTime').value.trim(),
+            traditionalTime: document.getElementById('itemTraditionalTime').value.trim(),
+            initialMass: document.getElementById('itemInitialMass').value.trim(),
+            finalMass: document.getElementById('itemFinalMass').value.trim(),
             notes: document.getElementById('itemNotes').value.trim()
         };
 
@@ -87,6 +99,7 @@ function openAddModal() {
     document.getElementById('modalTitle').textContent = 'Add Drying Guide Item';
     document.getElementById('editId').value = '';
     document.getElementById('guideForm').reset();
+    document.getElementById('itemInitialMass').value = '1000';
     document.getElementById('guideModal').style.display = 'flex';
 }
 
@@ -103,6 +116,9 @@ function editItem(id) {
     document.getElementById('itemTemp').value = item.temperature;
     document.getElementById('itemHumidity').value = item.humidity;
     document.getElementById('itemTime').value = item.dryingTime;
+    document.getElementById('itemTraditionalTime').value = item.traditionalTime || '';
+    document.getElementById('itemInitialMass').value = item.initialMass || '1000';
+    document.getElementById('itemFinalMass').value = item.finalMass || '';
     document.getElementById('itemNotes').value = item.notes || '';
     document.getElementById('guideModal').style.display = 'flex';
 }

@@ -1,5 +1,5 @@
 // Home Page Loader Script - Connected to localStorage (Admin Panel)
-const DATA_VERSION = '2.0'; // Bump this when default data changes
+const DATA_VERSION = '3.0'; // Bump this when default data changes
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Home page loading...');
@@ -96,6 +96,15 @@ function displayDryingGuide(items, container) {
         };
         const cat = categoryColors[item.category] || categoryColors['other'];
 
+        // Calculate mass reduction percentage
+        const initialMass = parseFloat(item.initialMass) || 0;
+        const finalMass = parseFloat(item.finalMass) || 0;
+        const massReduction = initialMass > 0 ? Math.round(((initialMass - finalMass) / initialMass) * 100) : 0;
+
+        // Build time comparison bar
+        const traditionalTime = item.traditionalTime || '';
+        const solarTime = item.dryingTime || '';
+
         return `
             <div class="drying-guide-card" style="--card-accent: ${cat.accent}; --card-bg: ${cat.bg};">
                 <div class="guide-card-header">
@@ -118,14 +127,45 @@ function displayDryingGuide(items, container) {
                             <span class="spec-value">${item.humidity}</span>
                         </div>
                     </div>
-                    <div class="guide-spec">
-                        <span class="spec-icon">⏱️</span>
-                        <div>
-                            <span class="spec-label">Drying Time</span>
-                            <span class="spec-value">${item.dryingTime}</span>
+                </div>
+
+                <!-- Mass Before & After -->
+                ${initialMass > 0 ? `
+                <div class="guide-mass-section">
+                    <div class="mass-header">⚖️ Mass Change (per 1 kg sample)</div>
+                    <div class="mass-bar-wrapper">
+                        <div class="mass-row">
+                            <span class="mass-label">Before</span>
+                            <div class="mass-bar-track">
+                                <div class="mass-bar initial" style="width: 100%;"></div>
+                            </div>
+                            <span class="mass-val">${item.initialMass} g</span>
+                        </div>
+                        <div class="mass-row">
+                            <span class="mass-label">After</span>
+                            <div class="mass-bar-track">
+                                <div class="mass-bar final" style="width: ${(finalMass / initialMass * 100).toFixed(0)}%; background: var(--card-accent);"></div>
+                            </div>
+                            <span class="mass-val">${item.finalMass} g</span>
                         </div>
                     </div>
+                    <div class="mass-reduction">↓ ${massReduction}% moisture removed</div>
                 </div>
+                ` : ''}
+
+                <!-- Time Comparison: Traditional vs Solar -->
+                <div class="guide-time-compare">
+                    <div class="time-compare-header">⏱️ Drying Time Comparison</div>
+                    <div class="time-row traditional">
+                        <span class="time-method">☀️ Open Sun</span>
+                        <span class="time-value bad">${traditionalTime || 'N/A'}</span>
+                    </div>
+                    <div class="time-row solar">
+                        <span class="time-method">🔆 Solar Dryer</span>
+                        <span class="time-value good">${solarTime}</span>
+                    </div>
+                </div>
+
                 ${item.notes ? `<p class="guide-notes">${item.notes}</p>` : ''}
             </div>
         `;
@@ -134,17 +174,17 @@ function displayDryingGuide(items, container) {
 
 function getDefaultDryingGuideItems() {
     return [
-        { id: 1, name: 'Mango Slices', category: 'fruit', temperature: '55–65°C', humidity: '10–12%', dryingTime: '8–12 hrs', notes: 'Slice 5–8mm thick. Golden color when done.' },
-        { id: 2, name: 'Tomatoes', category: 'vegetable', temperature: '55–60°C', humidity: '8–10%', dryingTime: '10–18 hrs', notes: 'Halve or quarter. Leathery texture when ready.' },
-        { id: 3, name: 'Red Chilli', category: 'spice', temperature: '50–60°C', humidity: '8–10%', dryingTime: '6–10 hrs', notes: 'Whole or split. Brittle when fully dry.' },
-        { id: 4, name: 'Paddy / Rice', category: 'grain', temperature: '40–50°C', humidity: '12–14%', dryingTime: '6–8 hrs', notes: 'Spread thin layer. Cracks when bitten = done.' },
-        { id: 5, name: 'Mint Leaves', category: 'herb', temperature: '35–45°C', humidity: '6–8%', dryingTime: '3–5 hrs', notes: 'Crumbles easily when properly dried.' },
-        { id: 6, name: 'Onion Flakes', category: 'vegetable', temperature: '55–65°C', humidity: '4–6%', dryingTime: '6–10 hrs', notes: 'Slice 3mm rings. Crispy and translucent.' },
-        { id: 7, name: 'Turmeric', category: 'spice', temperature: '50–60°C', humidity: '8–10%', dryingTime: '10–15 hrs', notes: 'Boil 45 min first. Hard and brittle when done.' },
-        { id: 8, name: 'Banana Chips', category: 'fruit', temperature: '60–70°C', humidity: '6–8%', dryingTime: '8–12 hrs', notes: 'Slice 3–5mm. Crispy and slightly chewy.' },
-        { id: 9, name: 'Coriander', category: 'herb', temperature: '35–40°C', humidity: '6–8%', dryingTime: '4–6 hrs', notes: 'Tie in bunches. Keep aroma by low temperature.' },
-        { id: 10, name: 'Grapes (Raisins)', category: 'fruit', temperature: '50–60°C', humidity: '14–18%', dryingTime: '24–48 hrs', notes: 'Dip in alkaline solution for golden color.' },
-        { id: 11, name: 'Amla (Gooseberry)', category: 'fruit', temperature: '50–55°C', humidity: '8–10%', dryingTime: '10–14 hrs', notes: 'Deseed and slice. High vitamin C retention.' },
-        { id: 12, name: 'Drumstick (Moringa)', category: 'vegetable', temperature: '50–60°C', humidity: '6–8%', dryingTime: '6–10 hrs', notes: 'Slice pods or dry leaves. Retains nutrients well.' }
+        { id: 1, name: 'Mango Slices', category: 'fruit', temperature: '55–65°C', humidity: '10–12%', dryingTime: '8–12 hrs', initialMass: '1000', finalMass: '150', traditionalTime: '3–5 days', notes: 'Slice 5–8mm thick. Golden color when done.' },
+        { id: 2, name: 'Tomatoes', category: 'vegetable', temperature: '55–60°C', humidity: '8–10%', dryingTime: '10–18 hrs', initialMass: '1000', finalMass: '100', traditionalTime: '4–7 days', notes: 'Halve or quarter. Leathery texture when ready.' },
+        { id: 3, name: 'Red Chilli', category: 'spice', temperature: '50–60°C', humidity: '8–10%', dryingTime: '6–10 hrs', initialMass: '1000', finalMass: '200', traditionalTime: '5–8 days', notes: 'Whole or split. Brittle when fully dry.' },
+        { id: 4, name: 'Paddy / Rice', category: 'grain', temperature: '40–50°C', humidity: '12–14%', dryingTime: '6–8 hrs', initialMass: '1000', finalMass: '860', traditionalTime: '2–3 days', notes: 'Spread thin layer. Cracks when bitten = done.' },
+        { id: 5, name: 'Mint Leaves', category: 'herb', temperature: '35–45°C', humidity: '6–8%', dryingTime: '3–5 hrs', initialMass: '1000', finalMass: '120', traditionalTime: '2–4 days', notes: 'Crumbles easily when properly dried.' },
+        { id: 6, name: 'Onion Flakes', category: 'vegetable', temperature: '55–65°C', humidity: '4–6%', dryingTime: '6–10 hrs', initialMass: '1000', finalMass: '100', traditionalTime: '3–5 days', notes: 'Slice 3mm rings. Crispy and translucent.' },
+        { id: 7, name: 'Turmeric', category: 'spice', temperature: '50–60°C', humidity: '8–10%', dryingTime: '10–15 hrs', initialMass: '1000', finalMass: '200', traditionalTime: '7–14 days', notes: 'Boil 45 min first. Hard and brittle when done.' },
+        { id: 8, name: 'Banana Chips', category: 'fruit', temperature: '60–70°C', humidity: '6–8%', dryingTime: '8–12 hrs', initialMass: '1000', finalMass: '180', traditionalTime: '3–5 days', notes: 'Slice 3–5mm. Crispy and slightly chewy.' },
+        { id: 9, name: 'Coriander', category: 'herb', temperature: '35–40°C', humidity: '6–8%', dryingTime: '4–6 hrs', initialMass: '1000', finalMass: '110', traditionalTime: '3–5 days', notes: 'Tie in bunches. Keep aroma by low temperature.' },
+        { id: 10, name: 'Grapes (Raisins)', category: 'fruit', temperature: '50–60°C', humidity: '14–18%', dryingTime: '24–48 hrs', initialMass: '1000', finalMass: '250', traditionalTime: '10–20 days', notes: 'Dip in alkaline solution for golden color.' },
+        { id: 11, name: 'Amla (Gooseberry)', category: 'fruit', temperature: '50–55°C', humidity: '8–10%', dryingTime: '10–14 hrs', initialMass: '1000', finalMass: '140', traditionalTime: '5–8 days', notes: 'Deseed and slice. High vitamin C retention.' },
+        { id: 12, name: 'Drumstick (Moringa)', category: 'vegetable', temperature: '50–60°C', humidity: '6–8%', dryingTime: '6–10 hrs', initialMass: '1000', finalMass: '130', traditionalTime: '4–6 days', notes: 'Slice pods or dry leaves. Retains nutrients well.' }
     ];
 }
