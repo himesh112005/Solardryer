@@ -81,99 +81,532 @@ a {
 
 /* === Hero Section === */
 .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('WhatsApp Image 2025-11-03 at 15.42.53_a64e1303.jpg'); 
+    background: linear-gradient(135deg, rgba(38,70,83,0.85), rgba(42,157,143,0.7)), url('WhatsApp Image 2025-11-03 at 15.42.53_a64e1303.jpg'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     color: var(--white);
-    padding: 8rem 0;
+    padding: 8rem 0 6rem;
     text-align: center;
-    min-height: 80vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(42,157,143,0.3) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+    animation: fadeInDown 0.8s ease;
 }
 
 .hero h1 {
     color: var(--white);
-    font-size: 3.5rem;
-    max-width: 800px;
+    font-size: 3.8rem;
+    max-width: 850px;
     margin-bottom: 1.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    animation: fadeInUp 0.8s ease 0.2s both;
 }
 
 .hero p {
-    font-size: 1.25rem;
-    max-width: 600px;
-    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    max-width: 620px;
+    margin: 0 auto 2.5rem;
+    opacity: 0.92;
+    line-height: 1.7;
+    animation: fadeInUp 0.8s ease 0.4s both;
 }
 
-/* === Core Benefits Section === */
-.benefits {
-    padding: 5rem 0;
-    background: var(--light-color);
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease 0.6s both;
+}
+
+.btn-primary-glow {
+    display: inline-block;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--secondary-color), #f4a261);
+    color: var(--dark-color);
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(233,196,106,0.4);
+}
+
+.btn-primary-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(233,196,106,0.6);
+}
+
+.btn-outline-light {
+    display: inline-block;
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-outline-light:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.7);
+    color: var(--white);
+}
+
+/* === Section Headers === */
+.section-header {
     text-align: center;
+    margin-bottom: 3.5rem;
 }
 
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2.5rem;
-    margin-top: 3rem;
-}
-
-.benefit-card {
-    background: var(--white);
-    padding: 2.5rem 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    transition: transform 0.3s ease;
-}
-
-.benefit-card:hover {
-    transform: translateY(-10px);
-}
-
-.benefit-card .icon {
-    font-size: 3rem;
+.section-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(42,157,143,0.12), rgba(42,157,143,0.05));
     color: var(--primary-color);
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(42,157,143,0.2);
+}
+
+.section-tag.light {
+    background: rgba(255,255,255,0.15);
+    color: var(--white);
+    border-color: rgba(255,255,255,0.25);
+}
+
+.section-header h2 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--dark-color);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* === Premium Benefits Section === */
+.benefits-premium {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, #f8fffe 0%, #f0faf8 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.benefits-grid-premium {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.benefit-card-premium {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(42,157,143,0.08);
+}
+
+.benefit-card-premium:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(42,157,143,0.15);
+}
+
+.benefit-image-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.benefit-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.benefit-card-premium:hover .benefit-image-wrapper img {
+    transform: scale(1.08);
+}
+
+.benefit-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(38,70,83,0.4) 100%);
+    pointer-events: none;
+}
+
+.benefit-card-body {
+    padding: 1.75rem 1.75rem 2rem;
+    position: relative;
+}
+
+.benefit-icon-badge {
+    position: absolute;
+    top: -28px;
+    left: 1.75rem;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    box-shadow: 0 8px 20px rgba(42,157,143,0.3);
+    border: 3px solid var(--white);
+}
+
+.benefit-card-body h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin: 0.75rem 0 0.6rem;
+}
+
+.benefit-card-body p {
+    color: #5a6b7a;
+    line-height: 1.7;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* === Premium Process / How It Works === */
+.how-it-works-premium {
+    padding: 6rem 0;
+    background: var(--white);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.process-timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.process-connector {
+    display: none;
+}
+
+.process-step {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.process-step.reverse {
+    direction: rtl;
+}
+
+.process-step.reverse > * {
+    direction: ltr;
+}
+
+.step-visual {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+
+.step-visual img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.process-step:hover .step-visual img {
+    transform: scale(1.05);
+}
+
+.step-number-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+    color: var(--white);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(42,157,143,0.4);
+}
+
+.step-label {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(42,157,143,0.12), rgba(42,157,143,0.05));
+    color: var(--primary-color);
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+}
+
+.step-content h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--dark-color);
+    margin-bottom: 0.75rem;
+}
+
+.step-content p {
+    color: #5a6b7a;
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+/* === Drying Guide Section === */
+.drying-guide-section {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, #f0faf8 0%, #f8fffe 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.guide-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+}
+
+.guide-filter-btn {
+    padding: 0.5rem 1.2rem;
+    border: 2px solid rgba(42,157,143,0.2);
+    background: var(--white);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--dark-color);
+}
+
+.guide-filter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.guide-filter-btn.active {
+    background: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
+.drying-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.drying-guide-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    transition: all 0.35s ease;
+    border-top: 4px solid var(--card-accent, var(--primary-color));
+}
+
+.drying-guide-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+}
+
+.guide-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.guide-icon {
+    font-size: 2rem;
+}
+
+.guide-category {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    background: var(--card-bg, #f0f0f0);
+    color: var(--card-accent, var(--primary-color));
+}
+
+.guide-item-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark-color);
     margin-bottom: 1rem;
 }
 
-.benefit-card h3 {
-    margin-bottom: 0.5rem;
+.guide-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
 }
 
-/* === How It Works Section === */
-.how-it-works {
-    padding: 5rem 0;
+.guide-spec {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.guide-spec .spec-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.guide-spec div {
+    display: flex;
+    flex-direction: column;
+}
+
+.spec-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+}
+
+.spec-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.guide-notes {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: #6b7280;
+    line-height: 1.5;
+    padding-top: 0.75rem;
+    border-top: 1px dashed #e5e7eb;
+    font-style: italic;
+}
+
+/* === Scroll Animations === */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.animate-on-scroll.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.benefit-card-premium:nth-child(2).animate-on-scroll { transition-delay: 0.15s; }
+.benefit-card-premium:nth-child(3).animate-on-scroll { transition-delay: 0.3s; }
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Social Impact Premium === */
+.social-impact .impact-content {
     text-align: center;
 }
 
-.how-it-works-steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-    text-align: left;
+.social-impact .impact-content h2 {
+    color: var(--white);
 }
 
-.step {
-    background: var(--light-color);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    border-left: 5px solid var(--primary-color);
+/* === Responsive for Premium Sections === */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.4rem; }
+    .section-header h2 { font-size: 2rem; }
+    .benefits-grid-premium { grid-template-columns: 1fr; }
+    .process-step,
+    .process-step.reverse {
+        grid-template-columns: 1fr;
+        direction: ltr;
+        gap: 1.5rem;
+    }
+    .step-visual img { height: 220px; }
 }
 
-.step .step-number {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.step h3 {
-    margin-bottom: 0.5rem;
+@media (max-width: 500px) {
+    .hero { padding: 6rem 1rem 4rem; min-height: 70vh; }
+    .hero h1 { font-size: 2rem; }
+    .hero-actions { flex-direction: column; align-items: center; }
+    .benefit-image-wrapper { height: 180px; }
 }
 
 /* === Featured Products Section */

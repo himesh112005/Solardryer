@@ -17,6 +17,11 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <!-- Shared mobile nav styles are in navbar.css -->
 
     <!-- 
@@ -59,63 +64,142 @@
     </header>
 
     <section class="hero">
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Revolutionizing Preservation. Empowered by the Sun.</h1>
+            <div class="hero-badge" id="hero-badge">
+                <span>🌞</span> Powered by the Sun
+            </div>
+            <h1>Revolutionizing Preservation.<br>Empowered by the Sun.</h1>
             <p>We provide innovative solar drying solutions that reduce post-harvest loss, improve product quality, and increase income for farmers and businesses.</p>
-            <a href="#products" class="btn btn-secondary">Discover Our Products</a>
+            <div class="hero-actions">
+                <a href="#products" class="btn btn-primary-glow">Discover Our Products</a>
+                <a href="#why-choose" class="btn btn-outline-light">Learn More ↓</a>
+            </div>
         </div>
     </section>
 
-    <section class="benefits">
+    <!-- Why Choose SolarDry Section -->
+    <section class="benefits-premium" id="why-choose">
         <div class="container">
-            <h2>Why Choose SolarDry?</h2>
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="icon">☀️</div>
-                    <h3>Sustainable & Eco-Friendly</h3>
-                    <p>Harness the power of the sun. Our dryers operate with zero fuel, zero emissions, and a minimal carbon footprint.</p>
+            <div class="section-header">
+                <span class="section-tag">Our Advantages</span>
+                <h2>Why Choose SolarDry?</h2>
+                <p class="section-subtitle">Sustainable innovation that transforms agriculture and empowers communities worldwide.</p>
+            </div>
+            <div class="benefits-grid-premium">
+                <div class="benefit-card-premium" id="benefit-sustainable">
+                    <div class="benefit-image-wrapper">
+                        <img src="images/sustainable-eco-friendly.png" alt="Sustainable solar dryer in a green farm with sunlight" loading="lazy">
+                        <div class="benefit-image-overlay"></div>
+                    </div>
+                    <div class="benefit-card-body">
+                        <div class="benefit-icon-badge">☀️</div>
+                        <h3>Sustainable & Eco-Friendly</h3>
+                        <p>Harness the power of the sun. Our dryers operate with zero fuel, zero emissions, and a minimal carbon footprint.</p>
+                    </div>
                 </div>
-                <div class="benefit-card">
-                    <div class="icon">🛡️</div>
-                    <h3>Superior Product Quality</h3>
-                    <p>Protect your produce. Our enclosed systems prevent contamination from pests, dust, and rain, ensuring hygienic and high-value end products.</p>
+                <div class="benefit-card-premium" id="benefit-quality">
+                    <div class="benefit-image-wrapper">
+                        <img src="images/superior-product-quality.png" alt="High-quality dried produce inside a clean solar dryer" loading="lazy">
+                        <div class="benefit-image-overlay"></div>
+                    </div>
+                    <div class="benefit-card-body">
+                        <div class="benefit-icon-badge">🛡️</div>
+                        <h3>Superior Product Quality</h3>
+                        <p>Protect your produce. Our enclosed systems prevent contamination from pests, dust, and rain, ensuring hygienic and high-value end products.</p>
+                    </div>
                 </div>
-                <div class="benefit-card">
-                    <div class="icon">📈</div>
-                    <h3>Economic Empowerment</h3>
-                    <p>Stop wasting fuel and start increasing profit. Reduce spoilage, cut operational costs, and get a fast return on your investment.</p>
+                <div class="benefit-card-premium" id="benefit-economic">
+                    <div class="benefit-image-wrapper">
+                        <img src="images/economic-empowerment.png" alt="Happy farmer with basket of dried produce" loading="lazy">
+                        <div class="benefit-image-overlay"></div>
+                    </div>
+                    <div class="benefit-card-body">
+                        <div class="benefit-icon-badge">📈</div>
+                        <h3>Economic Empowerment</h3>
+                        <p>Stop wasting fuel and start increasing profit. Reduce spoilage, cut operational costs, and get a fast return on your investment.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="how-it-works">
+    <!-- How It Works Section -->
+    <section class="how-it-works-premium" id="how-it-works">
         <div class="container">
-            <h2>A Simple, Powerful Process</h2>
-            <div class="how-it-works-steps">
-                <div class="step">
-                    <div class="step-number">Step 1</div>
-                    <h3>Collect</h3>
-                    <p>Solar energy is captured by a high-efficiency collector, heating the ambient air.</p>
+            <div class="section-header">
+                <span class="section-tag">The Process</span>
+                <h2>A Simple, Powerful Process</h2>
+                <p class="section-subtitle">Three elegant steps that harness nature's energy to preserve your produce perfectly.</p>
+            </div>
+            <div class="process-timeline">
+                <div class="process-connector"></div>
+                <div class="process-step" id="step-collect">
+                    <div class="step-visual">
+                        <img src="images/step-collect.png" alt="Solar energy collection panel with sun rays" loading="lazy">
+                        <div class="step-number-badge">01</div>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-label">Step 1</div>
+                        <h3>Collect</h3>
+                        <p>Solar energy is captured by a high-efficiency collector, heating the ambient air to optimal drying temperatures throughout the day.</p>
+                    </div>
                 </div>
-                <div class="step">
-                    <div class="step-number">Step 2</div>
-                    <h3>Circulate</h3>
-                    <p>The hot, dry air is channeled into a sealed drying chamber, either passively or with fans.</p>
+                <div class="process-step reverse" id="step-circulate">
+                    <div class="step-visual">
+                        <img src="images/step-circulate.png" alt="Hot air circulation inside a sealed drying chamber" loading="lazy">
+                        <div class="step-number-badge">02</div>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-label">Step 2</div>
+                        <h3>Circulate</h3>
+                        <p>The hot, dry air is channeled into a sealed drying chamber, either passively or with energy-efficient fans for maximum throughput.</p>
+                    </div>
                 </div>
-                <div class="step">
-                    <div class="step-number">Step 3</div>
-                    <h3>Dehydrate</h3>
-                    <p>The circulating air removes moisture from the produce, which is then vented out, preserving it naturally.</p>
+                <div class="process-step" id="step-dehydrate">
+                    <div class="step-visual">
+                        <img src="images/step-dehydrate.png" alt="Produce being dehydrated naturally on trays" loading="lazy">
+                        <div class="step-number-badge">03</div>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-label">Step 3</div>
+                        <h3>Dehydrate</h3>
+                        <p>The circulating air removes moisture from the produce, which is then vented out, preserving it naturally while maintaining nutritional value.</p>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Drying Guide Section -->
+    <section class="drying-guide-section" id="drying-guide">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Reference Guide</span>
+                <h2>Solar Drying Parameters</h2>
+                <p class="section-subtitle">Optimal temperature, humidity, and drying times for common produce. Managed and updated by our experts.</p>
+            </div>
+            <div class="guide-filter-bar" id="guideFilterBar">
+                <button class="guide-filter-btn active" data-filter="all" onclick="filterGuide('all', this)">All Items</button>
+                <button class="guide-filter-btn" data-filter="fruit" onclick="filterGuide('fruit', this)">🍎 Fruits</button>
+                <button class="guide-filter-btn" data-filter="vegetable" onclick="filterGuide('vegetable', this)">🥕 Vegetables</button>
+                <button class="guide-filter-btn" data-filter="spice" onclick="filterGuide('spice', this)">🌶️ Spices</button>
+                <button class="guide-filter-btn" data-filter="grain" onclick="filterGuide('grain', this)">🌾 Grains</button>
+                <button class="guide-filter-btn" data-filter="herb" onclick="filterGuide('herb', this)">🌿 Herbs</button>
+            </div>
+            <div class="drying-guide-grid" id="dryingGuideGrid">
+                <div class="text-center" style="padding: 2rem; grid-column: 1/-1;">Loading drying guide...</div>
             </div>
         </div>
     </section>
 
     <section class="featured-products" id="products">
         <div class="container">
-            <h2>Our Solar Dryer Models</h2>
-            <p>From small-scale farms to large industrial processing, we showcase our range of innovative solutions below.</p>
+            <div class="section-header">
+                <span class="section-tag">Our Range</span>
+                <h2>Our Solar Dryer Models</h2>
+                <p class="section-subtitle">From small-scale farms to large industrial processing, we showcase our range of innovative solutions below.</p>
+            </div>
             
             <div class="product-grid" id="homeProductGrid">
                 <div class="text-center" style="padding: 2rem; grid-column: 1/-1;">Loading products...</div>
@@ -123,11 +207,14 @@
         </div>
     </section>
 
-    <section class="social-impact">
+    <section class="social-impact" id="social-impact">
         <div class="container">
-            <h2>Building Food Security and Reducing Post-Harvest Loss</h2>
-            <p>Our mission goes beyond technology. We aim to empower rural communities, reduce spoilage, and create resilient food systems for a sustainable future.</p>
-            <a href="contact.html" class="btn btn-secondary">Partner With Us</a>
+            <div class="impact-content">
+                <span class="section-tag light">Our Mission</span>
+                <h2>Building Food Security and Reducing Post-Harvest Loss</h2>
+                <p>Our mission goes beyond technology. We aim to empower rural communities, reduce spoilage, and create resilient food systems for a sustainable future.</p>
+                <a href="contact.html" class="btn btn-primary-glow">Partner With Us</a>
+            </div>
         </div>
     </section>
 
@@ -167,11 +254,53 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
     <script src="public/js/api-client.js"></script>
     <script src="home-loader.js"></script>
     
     <script src="mobile-nav.js"></script>
+
+    <!-- Scroll Animations -->
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.15,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all animatable elements
+            document.querySelectorAll('.benefit-card-premium, .process-step, .section-header, .impact-content, .drying-guide-card').forEach(el => {
+                el.classList.add('animate-on-scroll');
+                observer.observe(el);
+            });
+        });
+
+        // Drying Guide Filter
+        function filterGuide(category, btn) {
+            // Update active button
+            document.querySelectorAll('.guide-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Filter cards
+            document.querySelectorAll('.drying-guide-card').forEach(card => {
+                if (category === 'all') {
+                    card.style.display = '';
+                } else {
+                    const cardCat = card.querySelector('.guide-category').textContent.toLowerCase();
+                    card.style.display = cardCat === category ? '' : 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

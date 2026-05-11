@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Products - Admin Panel</title>
-    
+    <title>Manage Drying Guide - Admin Panel</title>
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="admin.css">
-    
 </head>
 <body>
 
@@ -38,9 +36,9 @@
             <nav class="admin-nav">
                 <ul>
                     <li><a href="admin-dashboard.html">📊 Dashboard</a></li>
-                    <li><a href="admin-products.html" class="active">📦 Products</a></li>
+                    <li><a href="admin-products.html">📦 Products</a></li>
                     <li><a href="admin-blog.html">📝 Blog Articles</a></li>
-                    <li><a href="admin-drying-guide.html">🌡️ Drying Guide</a></li>
+                    <li><a href="admin-drying-guide.html" class="active">🌡️ Drying Guide</a></li>
                     <li><a href="admin-messages.html">💬 Messages</a></li>
                     <li><a href="admin-users.html">👥 Users</a></li>
                     <li><a href="admin-settings.html">⚙️ Settings</a></li>
@@ -51,24 +49,26 @@
 
         <main class="admin-content">
             <div class="admin-header">
-                <h1>Manage Products</h1>
-                <a href="admin-add-product.html" class="btn">+ Add New Product</a>
+                <h1>Manage Drying Guide</h1>
+                <button class="btn" onclick="openAddModal()">+ Add New Item</button>
             </div>
 
             <div class="admin-section">
+                <p style="margin-bottom: 1rem; color: #666;">These items are displayed on the home page "Solar Drying Parameters" section. Changes here reflect immediately on the front page.</p>
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Model ID</th>
-                            <th>Price</th>
-                            <th>Status</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                            <th>Drying Time</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="products-table">
+                    <tbody id="guide-table">
                         <tr>
-                            <td colspan="5" class="text-center">Loading products...</td>
+                            <td colspan="6" class="text-center">Loading items...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -76,31 +76,47 @@
         </main>
     </div>
 
-    <!-- Add Product Modal -->
-    <div id="productModal" class="modal">
+    <!-- Add/Edit Modal -->
+    <div id="guideModal" class="modal" style="display:none;">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Add New Product</h2>
-            <form id="addProductForm">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Add Drying Guide Item</h2>
+            <form id="guideForm">
+                <input type="hidden" id="editId">
                 <div class="form-group">
-                    <label for="productName">Product Name</label>
-                    <input type="text" id="productName" required>
+                    <label for="itemName">Item Name *</label>
+                    <input type="text" id="itemName" placeholder="e.g. Mango Slices" required>
                 </div>
                 <div class="form-group">
-                    <label for="modelId">Model ID</label>
-                    <input type="text" id="modelId" required>
+                    <label for="itemCategory">Category *</label>
+                    <select id="itemCategory" required>
+                        <option value="fruit">🍎 Fruit</option>
+                        <option value="vegetable">🥕 Vegetable</option>
+                        <option value="spice">🌶️ Spice</option>
+                        <option value="grain">🌾 Grain</option>
+                        <option value="herb">🌿 Herb</option>
+                        <option value="other">📦 Other</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="price">Price (₹)</label>
-                    <input type="number" id="price" required>
+                    <label for="itemTemp">Temperature *</label>
+                    <input type="text" id="itemTemp" placeholder="e.g. 55–65°C" required>
                 </div>
                 <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" rows="4" required></textarea>
+                    <label for="itemHumidity">Target Humidity *</label>
+                    <input type="text" id="itemHumidity" placeholder="e.g. 10–12%" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemTime">Drying Time *</label>
+                    <input type="text" id="itemTime" placeholder="e.g. 8–12 hrs" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemNotes">Notes (optional)</label>
+                    <textarea id="itemNotes" rows="3" placeholder="Tips or indicators for when it's done"></textarea>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn">Save Product</button>
-                    <button type="button" onclick="closeProductModal()" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn">Save Item</button>
+                    <button type="button" onclick="closeModal()" class="btn btn-secondary">Cancel</button>
                 </div>
             </form>
         </div>
@@ -117,6 +133,6 @@
     <script src="config.js"></script>
     <script src="public/js/api-client.js"></script>
     <script src="auth-manager.js"></script>
-    <script src="admin-products.js"></script>
+    <script src="admin-drying-guide.js"></script>
 </body>
 </html>

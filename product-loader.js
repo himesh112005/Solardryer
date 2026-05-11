@@ -1,60 +1,33 @@
-// Product Loader Script with Supabase Real-time Support
-const api = new APIClient();
+// Product Loader Script - Connected to localStorage (Admin Panel)
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Products page loading...');
     loadProducts();
-    
-    // Subscribe to Real-time updates
-    if (api.supabase) {
-        api.subscribeToProducts((payload) => {
-            console.log('Product change detected, reloading grid...');
-            loadProducts();
-        });
-    }
 });
 
-// Load products
-async function loadProducts() {
+function loadProducts() {
     const productGrid = document.getElementById('productGrid');
-    
-    if (!productGrid) {
-        console.error('Product grid not found');
-        return;
-    }
+    if (!productGrid) return;
 
     productGrid.innerHTML = '<div class="text-center" style="padding: 2rem; grid-column: 1/-1;">Loading products...</div>';
 
-    try {
-        // Fetch from API (Supabase prioritized inside APIClient)
-        const result = await api.getProducts();
-        
-        let products = [];
-        if (result.success && result.data.length > 0) {
-            products = result.data;
-        } else {
-            // Fallback to local defaults if no DB data
-            products = getDefaultProducts();
-        }
-        
-        // Filter active products
-        const activeProducts = products.filter(p => p.status === 'active');
-        
-        if (activeProducts.length === 0) {
-            productGrid.innerHTML = '<div class="text-center" style="padding: 2rem; grid-column: 1/-1;">No products available.</div>';
-            return;
-        }
-        
-        // Display products
-        displayProducts(activeProducts, productGrid);
-        
-    } catch (error) {
-        console.error('Error loading products:', error);
-        productGrid.innerHTML = '<div class="text-center" style="padding: 2rem; grid-column: 1/-1;">Error loading products.</div>';
+    // Read from localStorage (shared with admin panel)
+    let products = JSON.parse(localStorage.getItem('products')) || [];
+    
+    if (products.length === 0) {
+        products = getDefaultProducts();
     }
+    
+    const activeProducts = products.filter(p => p.status === 'active');
+    
+    if (activeProducts.length === 0) {
+        productGrid.innerHTML = '<div class="text-center" style="padding: 2rem; grid-column: 1/-1;">No products available.</div>';
+        return;
+    }
+    
+    displayProducts(activeProducts, productGrid);
 }
 
-// Display products
 function displayProducts(products, container) {
     container.innerHTML = products.map(product => `
         <div class="product-card">
@@ -74,26 +47,11 @@ function displayProducts(products, container) {
     `).join('');
 }
 
-// Get default products (only called if no data in DB)
 function getDefaultProducts() {
     return [
-        {
-            id: '1',
-            name: 'Small Farm Unit',
-            model_id: 'S-100',
-            price: 25000,
-            description: 'Perfect for individual farmers, this compact unit offers high efficiency for small batches of produce.',
-            image: 'https://placehold.co/300x200/2a9d8f/ffffff?text=Small+Farm+Dryer',
-            status: 'active'
-        },
-        {
-            id: '2',
-            name: 'Commercial Processor',
-            model_id: 'C-500',
-            price: 150000,
-            description: 'A medium-scale solution designed for co-ops and small businesses requiring larger capacity and faster drying times.',
-            image: 'https://placehold.co/300x200/e9c46a/264653?text=Commercial+Dryer',
-            status: 'active'
-        }
+        { id: 1, name: 'SolarDry Compact – Small Farm Unit', model_id: 'SD-100', price: 25000, description: 'Ideal for individual farmers drying up to 10 kg per batch. Compact, portable, and perfect for fruits, vegetables, and herbs.', image: 'https://placehold.co/400x250/2a9d8f/ffffff?text=Small+Farm+Dryer', status: 'active' },
+        { id: 2, name: 'SolarDry Plus – Medium Community Dryer', model_id: 'SD-300', price: 75000, description: 'Designed for farmer groups and co-operatives. Handles 25–50 kg per batch with enhanced airflow and dual-tray system.', image: 'https://placehold.co/400x250/e9c46a/264653?text=Medium+Community+Dryer', status: 'active' },
+        { id: 3, name: 'SolarDry Pro – Large Commercial Dryer', model_id: 'SD-750', price: 200000, description: 'Built for agri-businesses and food processors. Capacity of 100–200 kg per batch with fan-assisted convection and temperature control.', image: 'https://placehold.co/400x250/f4a261/ffffff?text=Large+Commercial+Dryer', status: 'active' },
+        { id: 4, name: 'SolarDry Max – Industrial High-Flow System', model_id: 'SD-2000', price: 500000, description: 'Top-tier industrial system for large-volume processing units. Handles 500+ kg per batch with automated controls and multi-zone drying.', image: 'https://placehold.co/400x250/264653/e9c46a?text=Industrial+System', status: 'active' }
     ];
 }

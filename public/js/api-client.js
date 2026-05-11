@@ -4,16 +4,6 @@ class APIClient {
         this.token = localStorage.getItem('token');
         this.ready = true;
         
-        // Initialize Supabase if available
-        if (typeof CONFIG !== 'undefined' && CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) {
-            try {
-                this.supabase = window.supabase?.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
-                console.log('✅ Supabase initialized');
-            } catch (err) {
-                console.error('❌ Supabase initialization failed:', err);
-            }
-        }
-        
         console.log('API Client initialized with baseURL:', this.baseURL);
     }
 
@@ -117,21 +107,6 @@ class APIClient {
 
     // Send message
     async sendMessage(data) {
-        // Try Supabase first if available
-        if (this.supabase) {
-            try {
-                const { error } = await this.supabase
-                    .from('messages')
-                    .insert([data]);
-
-                if (error) throw error;
-                return { success: true, message: 'Message sent via Supabase' };
-            } catch (error) {
-                console.error('Supabase error sending message:', error);
-                // Fall through to standard API or local storage
-            }
-        }
-
         try {
             console.log('Sending message to API...');
             
@@ -165,22 +140,6 @@ class APIClient {
 
     // Get all products
     async getProducts() {
-        // Try Supabase first if available
-        if (this.supabase) {
-            try {
-                const { data, error } = await this.supabase
-                    .from('products')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-                return { success: true, data: data };
-            } catch (error) {
-                console.error('Supabase error fetching products:', error);
-                // Fall through to standard API
-            }
-        }
-
         try {
             const response = await fetch(`${this.baseURL}/api/products`, {
                 headers: this.getHeaders()
@@ -196,19 +155,6 @@ class APIClient {
             console.error('Error fetching products from API:', error);
             return { success: false, data: [] };
         }
-    }
-
-    // Subscribe to real-time updates for products
-    subscribeToProducts(callback) {
-        if (!this.supabase) return null;
-        
-        return this.supabase
-            .channel('public:products')
-            .on('postgres_changes', { event: '*', table: 'products' }, (payload) => {
-                console.log('Real-time update received:', payload);
-                callback(payload);
-            })
-            .subscribe();
     }
 
     // Get all messages
